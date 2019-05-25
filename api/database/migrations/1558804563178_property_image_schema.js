@@ -11,7 +11,7 @@ class PropertyImageSchema extends Schema {
         .integer("property_id")
         .unsigned()
         .references("id")
-        .onTable("properties")
+        .inTable("properties")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("path").notNullable();
