@@ -1,4 +1,6 @@
-'use strict'
+"use strict";
+
+const Property = use("App/Models/Property");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -17,19 +19,14 @@ class PropertyController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
+  async index({ request, response, view }) {
+    try {
+      const properties = await Property.all();
 
-  /**
-   * Render a form to be used for creating a new property.
-   * GET properties/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+      return properties;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /**
@@ -40,8 +37,7 @@ class PropertyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
-  }
+  async store({ request, response }) {}
 
   /**
    * Display a single property.
@@ -52,19 +48,24 @@ class PropertyController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show({ params, request, response, view }) {
+    try {
+      const property = await Property.query()
+        .where({ id: params.id })
+        .with("images")
+        .first();
 
-  /**
-   * Render a form to update an existing property.
-   * GET properties/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+      /**
+       * If the property exists, send it back,
+       * if not, send a 404 with a message
+       */
+      return property
+        ? property
+        : response.status(404).send({ message: "Property not found!" });
+    } catch (error) {
+      console.log(error);
+      return response.status(500).send({ message: "Something went wrong!" });
+    }
   }
 
   /**
@@ -75,8 +76,7 @@ class PropertyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
-  }
+  async update({ params, request, response }) {}
 
   /**
    * Delete a property with id.
@@ -86,8 +86,20 @@ class PropertyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response, auth }) {
+    try {
+      const property = Property.findOrFail(params.id);
+
+      if (property.user_id !== auth.user.id)
+        return response.status(401).send({ message: "Not authorized!" });
+
+      await property.delete();
+    } catch (error) {
+      return response
+        .status(500)
+        .send({ message: "Something wrong happened!" });
+    }
   }
 }
 
-module.exports = PropertyController
+module.exports = PropertyController;

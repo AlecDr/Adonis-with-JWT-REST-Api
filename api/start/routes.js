@@ -16,8 +16,14 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-Route.post("/user/create", "UserController.store");
+// Authentication routes
+Route.post("/users/create", "UserController.store");
 Route.post("/auth/authenticate", "AuthController.create");
+
+// Properties routes
+Route.resource("/properties", "PropertyController")
+  .apiOnly()
+  .middleware("auth");
 
 Route.any("*", ({ response }) => {
   return response.status(404).send({ message: "This route does not exist!" });
