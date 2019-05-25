@@ -17,6 +17,7 @@
 const Route = use("Route");
 
 Route.post("/user/create", "UserController.store");
+Route.post("/auth/authenticate", "AuthController.create");
 
 Route.any("*", ({ response }) => {
   return response.status(404).send({ message: "This route does not exist!" });
