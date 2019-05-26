@@ -41,7 +41,24 @@ class PropertyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, response, auth }) {
+    try {
+      const { id } = auth.user;
+      const data = request.only([
+        "title",
+        "address",
+        "latitude",
+        "longitude",
+        "price"
+      ]);
+
+      const property = await Property.create({ ...data, user_id: id });
+
+      return { property, message: "Property created successfully" };
+    } catch (error) {
+      return response.status(500).send({ message: "Something went wrong!" });
+    }
+  }
 
   /**
    * Display a single property.
@@ -80,7 +97,34 @@ class PropertyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response, auth }) {
+    try {
+      const property = await auth.user
+        .properties()
+        .where("id", request.input("id"))
+        .first();
+
+      if (!property) {
+        return response.status(404).send({ message: "Not found!" });
+      } else {
+        const data = request.only([
+          "title",
+          "address",
+          "latitude",
+          "longitude",
+          "price"
+        ]);
+
+        property.merge(data);
+        await property.save();
+
+        return { property, message: "Property updated successfully!" };
+      }
+    } catch (error) {
+      console.log(error);
+      return response.status(500).send({ message: "Something went wrong!" });
+    }
+  }
 
   /**
    * Delete a property with id.
