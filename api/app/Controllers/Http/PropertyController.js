@@ -21,7 +21,11 @@ class PropertyController {
    */
   async index({ request, response, view }) {
     try {
-      const properties = await Property.all();
+      const { latitude, longitude, distance } = request.all();
+
+      const properties = await Property.query()
+        .nearBy(latitude, longitude, distance)
+        .fetch();
 
       return properties;
     } catch (error) {
