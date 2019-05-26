@@ -24,6 +24,10 @@ Route.post("/auth/authenticate", "AuthController.create");
 Route.resource("/properties", "PropertyController")
   .apiOnly()
   .middleware("auth");
+Route.post("/properties/:id/images/store", "ImageController.store").middleware(
+  "auth"
+);
+Route.get("/images/:path", "ImageController.show");
 
 Route.any("*", ({ response }) => {
   return response.status(404).send({ message: "This route does not exist!" });
