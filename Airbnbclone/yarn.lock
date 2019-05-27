@@ -1991,6 +1991,10 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
+flow-bin@^0.92.0:
+  version "0.92.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.92.1.tgz#32c136c07235f30c42dc0549a0790f370fad4070"
+
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -2899,13 +2903,13 @@ jest-watcher@^24.8.0:
     jest-util "^24.8.0"
     string-length "^2.0.0"
 
-jest-worker@24.0.0-alpha.6, jest-worker@^24.0.0-alpha.6:
+jest-worker@24.0.0-alpha.6:
   version "24.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-24.0.0-alpha.6.tgz#463681b92c117c57107135c14b9b9d6cd51d80ce"
   dependencies:
     merge-stream "^1.0.1"
 
-jest-worker@^24.6.0:
+jest-worker@^24.0.0-alpha.6, jest-worker@^24.6.0:
   version "24.6.0"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-24.6.0.tgz#7f81ceae34b7cde0c9827a6980c35b7cdc0161b3"
   dependencies:
