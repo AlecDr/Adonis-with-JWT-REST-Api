@@ -21,7 +21,9 @@ export default class LoadingPage extends React.Component {
     this.setState({ interval });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    clearInterval(this.state.interval);
+  };
 
   addLoadingDots = () => {
     let loadingDots = "";
