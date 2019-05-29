@@ -8,6 +8,32 @@ import { LoaderText, MainContainer } from "./styles";
 import Image from "react-native-scalable-image";
 
 export default class LoadingPage extends React.Component {
+  state = {
+    loadingDots: "...",
+    interval: null
+  };
+
+  componentDidMount = () => {
+    const interval = setInterval(() => {
+      this.addLoadingDots();
+    }, 300);
+
+    this.setState({ interval });
+  };
+
+  componentWillUnmount = () => {};
+
+  addLoadingDots = () => {
+    let loadingDots = "";
+
+    if (this.state.loadingDots === "") loadingDots = ".";
+    if (this.state.loadingDots === ".") loadingDots = "..";
+    if (this.state.loadingDots === "..") loadingDots = "...";
+    if (this.state.loadingDots === "...") loadingDots = "";
+
+    this.setState({ loadingDots });
+  };
+
   render() {
     return (
       <MainContainer>
@@ -15,7 +41,7 @@ export default class LoadingPage extends React.Component {
           width={Dimensions.get("window").width}
           source={require("../../images/loading-image.png")}
         />
-        <LoaderText>Loading...</LoaderText>
+        <LoaderText>Loading{this.state.loadingDots}</LoaderText>
       </MainContainer>
     );
   }
