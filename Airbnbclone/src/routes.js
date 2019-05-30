@@ -1,12 +1,18 @@
-import {
-  createStackNavigator,
-  createSwitchNavigator,
-  createAppContainer
-} from "react-navigation";
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
+
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { Main, SignIn, SignUp, LoadingPage } from "./pages/index";
 
-const AuthStack = createStackNavigator({ SignIn: SignIn, SignUp: SignUp });
+const AuthStack = createMaterialBottomTabNavigator(
+  {
+    "Sign In": SignIn,
+    "Sign Up": SignUp
+  },
+  {
+    shifting: true
+  }
+);
 
 const Routes = createSwitchNavigator(
   { AuthStack, Main, LoadingPage },
