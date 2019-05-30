@@ -32,11 +32,12 @@ export default class LoadingPage extends React.Component {
     try {
       const token = await AsyncStorage.getItem("auth_token");
       if (token) {
+        this.props.navigation.navigate("AuthStack");
       } else {
         this.setState({ error: true });
       }
     } catch (error) {
-      this.setState({ error });
+      this.setState({ error: true });
     }
   };
 
