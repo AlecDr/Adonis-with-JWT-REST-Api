@@ -9,10 +9,12 @@ class UserController {
       );
 
       const { username, email } = user.toJSON();
-      return { username, email };
+      return response
+        .status(201)
+        .send({ message: "User created with email: " + email });
     } catch (error) {
       console.log(error);
-      return response.status(409).send({
+      return response.status(200).send({
         message: "A user with this these credentials already exists!"
       });
     }
