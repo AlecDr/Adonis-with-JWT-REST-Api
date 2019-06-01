@@ -1,9 +1,9 @@
 import React from "react";
 import { Dimensions } from "react-native";
+import api from "../../services/api";
 
 import Icon from "react-native-vector-icons/Entypo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
 import Image from "react-native-scalable-image";
 
 import {
@@ -12,15 +12,24 @@ import {
   Container,
   TextInput,
   InputContainer,
-  InputLabel
+  InputLabel,
+  ErrorText,
+  SuccessText,
+  MessagesContainer
 } from "./styles";
 
 export default class SignUp extends React.Component {
   state = {
     error: "",
+    success: "",
     email: "",
-    name: "",
+    username: "",
     password: ""
+  };
+
+  static navigationOptions = {
+    tabBarIcon: <Icon style={{ fontSize: 20 }} name="new-message" />,
+    tabBarColor: "#ff6064"
   };
 
   handleEmailChange = email => {
@@ -31,13 +40,61 @@ export default class SignUp extends React.Component {
     this.setState({ password });
   };
 
-  handleNameChange = name => {
-    this.setState({ name });
+  handleUsernameChange = username => {
+    this.setState({ username });
   };
 
-  static navigationOptions = {
-    tabBarIcon: <Icon style={{ fontSize: 20 }} name="new-message" />,
-    tabBarColor: "#ff6064"
+  handleRegister = async () => {
+    this.setState({
+      success: "",
+      error: ""
+    });
+
+    const { username, email, password } = this.state;
+
+    if (username.length && email.length && password.length >= 6) {
+      try {
+        const response = await api.post("/users/create", {
+          username,
+          email,
+          password
+        });
+
+        if (response.status == 201) {
+          this.setState({
+            email: "",
+            password: "",
+            username: "",
+            success: response.data.message
+          });
+        } else {
+          this.setState({
+            error: response.data.message
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        this.setState({
+          error: "Something went wrong, try again later! " + error
+        });
+      }
+    } else {
+      this.setState({
+        error:
+          "You must provide an valid name, email and a password with at least 6 characters!"
+      });
+    }
+  };
+
+  renderMessages = () => {
+    return (
+      <MessagesContainer>
+        {this.state.error ? <ErrorText>{this.state.error}</ErrorText> : null}
+        {this.state.success ? (
+          <SuccessText>{this.state.success}</SuccessText>
+        ) : null}
+      </MessagesContainer>
+    );
   };
 
   render() {
@@ -59,8 +116,8 @@ export default class SignUp extends React.Component {
           <InputContainer>
             <InputLabel>Name</InputLabel>
             <TextInput
-              onChangeText={this.handleNameChange}
-              value={this.state.name}
+              onChangeText={this.handleUsernameChange}
+              value={this.state.username}
               autoCapitalize={false}
               autoCorrect={false}
               placeholder="Name"
@@ -87,7 +144,8 @@ export default class SignUp extends React.Component {
               placeholder="********"
             />
           </InputContainer>
-          <Button>
+          {this.renderMessages()}
+          <Button onPress={this.handleRegister}>
             <ButtonText>Register now</ButtonText>
           </Button>
         </Container>
