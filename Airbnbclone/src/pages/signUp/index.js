@@ -18,13 +18,16 @@ import {
   MessagesContainer
 } from "./styles";
 
+import LoadingIcon from "../../components/LoadingIcon";
+
 export default class SignUp extends React.Component {
   state = {
     error: "",
     success: "",
     email: "",
     username: "",
-    password: ""
+    password: "",
+    loading: false
   };
 
   static navigationOptions = {
@@ -47,7 +50,8 @@ export default class SignUp extends React.Component {
   handleRegister = async () => {
     this.setState({
       success: "",
-      error: ""
+      error: "",
+      loading: true
     });
 
     const { username, email, password } = this.state;
@@ -65,23 +69,27 @@ export default class SignUp extends React.Component {
             email: "",
             password: "",
             username: "",
-            success: response.data.message
+            success: response.data.message,
+            loading: false
           });
         } else {
           this.setState({
-            error: response.data.message
+            error: response.data.message,
+            loading: false
           });
         }
       } catch (error) {
         console.log(error);
         this.setState({
-          error: "Something went wrong, try again later! " + error
+          error: "Something went wrong, try again later! " + error,
+          loading: false
         });
       }
     } else {
       this.setState({
         error:
-          "You must provide an valid name, email and a password with at least 6 characters!"
+          "You must provide an valid name, email and a password with at least 6 characters!",
+        loading: false
       });
     }
   };
@@ -94,6 +102,16 @@ export default class SignUp extends React.Component {
           <SuccessText>{this.state.success}</SuccessText>
         ) : null}
       </MessagesContainer>
+    );
+  };
+
+  renderButtonOrSpinner = () => {
+    return this.state.loading ? (
+      <LoadingIcon />
+    ) : (
+      <Button onPress={this.handleRegister}>
+        <ButtonText>Register now</ButtonText>
+      </Button>
     );
   };
 
@@ -145,9 +163,7 @@ export default class SignUp extends React.Component {
             />
           </InputContainer>
           {this.renderMessages()}
-          <Button onPress={this.handleRegister}>
-            <ButtonText>Register now</ButtonText>
-          </Button>
+          {this.renderButtonOrSpinner()}
         </Container>
       </KeyboardAwareScrollView>
     );
