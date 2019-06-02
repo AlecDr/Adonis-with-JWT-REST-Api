@@ -11,7 +11,11 @@ export default class LoadingIcon extends React.Component {
 
   componentDidMount() {
     Animated.loop(
-      Animated.timing(this.animation, { toValue: 1, duration: 1000 })
+      Animated.timing(this.animation, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true
+      })
     ).start();
   }
 
