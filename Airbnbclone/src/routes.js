@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { MapPage, SignIn, SignUp, LoadingPage, UserPage } from "./pages/index";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AuthStack = createMaterialBottomTabNavigator(
   {
@@ -44,7 +45,15 @@ const MainStackNavigator = createStackNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => {
       return {
-        headerLeft: <Icon style={{ paddingLeft: 10 }} name="menu" size={30} />
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          >
+            <Icon style={{ paddingLeft: 10 }} name="menu" size={30} />
+          </TouchableOpacity>
+        )
       };
     }
   }
