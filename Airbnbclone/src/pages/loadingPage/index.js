@@ -24,7 +24,7 @@ export default class LoadingPage extends React.Component {
     try {
       const token = await AsyncStorage.getItem("user_token");
       if (token) {
-        this.props.navigation.navigate("DrawerNavigator");
+        this.props.navigation.navigate("MainDrawer");
       } else {
         this.setState({ error: true });
       }
