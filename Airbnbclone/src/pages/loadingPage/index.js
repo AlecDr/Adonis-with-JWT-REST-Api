@@ -24,7 +24,7 @@ export default class LoadingPage extends React.Component {
 
   _checkAuth = async () => {
     try {
-      const token = await AsyncStorage.getItem("auth_token");
+      const token = await AsyncStorage.getItem("user_token");
       if (token) {
         this.props.navigation.navigate("AuthStack");
       } else {

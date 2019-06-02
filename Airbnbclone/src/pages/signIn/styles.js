@@ -44,3 +44,19 @@ export const Button = styled.TouchableOpacity`
   border-radius: 6px;
   align-items: center;
 `;
+
+export const MessagesContainer = styled.View`
+  width: 90%;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ErrorText = styled.Text`
+  color: red;
+  font-size: 16px;
+`;
+
+export const SuccessText = styled.Text`
+  font-size: 16px;
+  color: green;
+`;

@@ -81,7 +81,7 @@ export default class SignUp extends React.Component {
       } catch (error) {
         console.log(error);
         this.setState({
-          error: "Something went wrong, try again later! " + error,
+          error: "Something went wrong, try again later!",
           loading: false
         });
       }
