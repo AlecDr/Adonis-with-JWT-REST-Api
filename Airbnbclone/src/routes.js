@@ -1,4 +1,11 @@
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import React from "react";
+import {
+  createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createStackNavigator
+} from "react-navigation";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
@@ -14,18 +21,43 @@ const AuthStack = createMaterialBottomTabNavigator(
   }
 );
 
-const MainStack = createMaterialBottomTabNavigator(
+const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Map: MapPage,
     Profile: UserPage
   },
   {
-    shifting: true
+    shifting: true,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state.routes[navigation.state.index];
+      return {
+        headerTitle: routeName
+      };
+    }
   }
 );
 
+const MainStackNavigator = createStackNavigator(
+  {
+    MainTabNavigator
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => {
+      return {
+        headerLeft: <Icon style={{ paddingLeft: 10 }} name="menu" size={30} />
+      };
+    }
+  }
+);
+
+const DrawerNavigator = createDrawerNavigator({
+  Main: {
+    screen: MainStackNavigator
+  }
+});
+
 const Routes = createSwitchNavigator(
-  { AuthStack, MainStack, LoadingPage },
+  { AuthStack, DrawerNavigator, LoadingPage },
   { initialRouteName: "LoadingPage" }
 );
 

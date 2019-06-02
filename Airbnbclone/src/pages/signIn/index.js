@@ -64,7 +64,7 @@ export default class SignIn extends React.Component {
           await AsyncStorage.setItem("user_token", response.data.token.token);
           await AsyncStorage.setItem("user_name", response.data.user.name);
           await AsyncStorage.setItem("user_email", response.data.user.email);
-          this.props.navigation.navigate("MainStack");
+          this.props.navigation.navigate("DrawerNavigator");
         } else {
           this.setState({
             loading: false,
