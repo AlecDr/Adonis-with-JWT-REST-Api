@@ -9,20 +9,14 @@ import { Text, ButtonText, MainContainer, AuthenticateButton } from "./styles";
 
 // libs components
 import Image from "react-native-scalable-image";
+import LoadingIcon from "../../components/LoadingIcon";
 
 export default class LoadingPage extends React.Component {
   state = {
-    loadingDots: "...",
-    error: false,
-    interval: null
+    error: false
   };
 
   componentDidMount = () => {
-    const interval = setInterval(() => {
-      this.addLoadingDots();
-    }, 300);
-
-    this.setState({ interval });
     setTimeout(() => {
       this._checkAuth();
     }, 1000);
@@ -39,21 +33,6 @@ export default class LoadingPage extends React.Component {
     } catch (error) {
       this.setState({ error: true });
     }
-  };
-
-  componentWillUnmount = () => {
-    clearInterval(this.state.interval);
-  };
-
-  addLoadingDots = () => {
-    let loadingDots = "";
-
-    if (this.state.loadingDots === "") loadingDots = ".";
-    if (this.state.loadingDots === ".") loadingDots = "..";
-    if (this.state.loadingDots === "..") loadingDots = "...";
-    if (this.state.loadingDots === "...") loadingDots = "";
-
-    this.setState({ loadingDots });
   };
 
   handleAuthenticateButtonPress = () => {
@@ -81,7 +60,7 @@ export default class LoadingPage extends React.Component {
             width={Dimensions.get("window").width}
             source={require("../../images/loading-image.png")}
           />
-          <Text>Loading{this.state.loadingDots}</Text>
+          <LoadingIcon />
         </MainContainer>
       );
     }
