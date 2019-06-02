@@ -17,9 +17,7 @@ export default class LoadingPage extends React.Component {
   };
 
   componentDidMount = () => {
-    setTimeout(() => {
-      this._checkAuth();
-    }, 1000);
+    this._checkAuth();
   };
 
   _checkAuth = async () => {
