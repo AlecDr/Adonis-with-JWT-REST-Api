@@ -1,4 +1,6 @@
 import MainDrawer from "./MainDrawer";
 import AuthStack from "./AuthStack";
+import MapStack from "./MapStack";
+import UserProfileStack from "./UserProfileStack";
 
-export { MainDrawer, AuthStack };
+export { MainDrawer, AuthStack, MapStack, UserProfileStack };

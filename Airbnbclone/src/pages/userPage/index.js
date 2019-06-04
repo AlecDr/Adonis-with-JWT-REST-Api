@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default class UserPage extends React.Component {
   state = {
@@ -8,9 +8,8 @@ export default class UserPage extends React.Component {
   };
 
   static navigationOptions = {
-    tabBarIcon: <Icon style={{ fontSize: 20 }} name="user" />,
-    tabBarColor: "#ff7a7d",
-    headerTitle: "Profile"
+    headerTitle: "Profile",
+    headerLeft: <Icon style={{ fontSize: 30, paddingLeft: 20 }} name="menu" />
   };
 
   componentDidMount() {}

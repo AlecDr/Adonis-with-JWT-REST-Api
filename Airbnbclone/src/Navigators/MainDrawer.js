@@ -1,53 +1,41 @@
+import {
+  createDrawerNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { TouchableOpacity } from "react-native";
+import FAIcon from "react-native-vector-icons/FontAwesome5";
 
-import { createDrawerNavigator, createStackNavigator } from "react-navigation";
-
-import { MapPage, UserPage } from "../pages/index";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import MapStack from "./MapStack";
+import UserProfileStack from "./UserProfileStack";
 
-const MainTabNavigator = createMaterialBottomTabNavigator(
+const MainTabNavigator = createBottomTabNavigator(
   {
-    Map: MapPage,
-    Profile: UserPage
+    Map: {
+      screen: MapStack,
+      navigationOptions: {
+        tabBarIcon: <Icon style={{ fontSize: 20 }} name="mapbox" />,
+        tabBarColor: "#ff6064",
+        headerTitle: "Profile",
+        header: null
+      }
+    },
+    Profile: {
+      screen: UserProfileStack,
+      navigationOptions: {
+        tabBarIcon: <FAIcon style={{ fontSize: 20 }} name="user" />,
+        tabBarColor: "#ff7a7d",
+        headerTitle: "Profile",
+        header: null
+      }
+    }
   },
   {
-    shifting: true,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state.routes[navigation.state.index];
-      return {
-        headerTitle: routeName
-      };
-    }
+    shifting: true
   }
 );
 
-const MainStackNavigator = createStackNavigator(
-  {
-    MainTabNavigator
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.openDrawer();
-            }}
-          >
-            <Icon style={{ paddingLeft: 10 }} name="menu" size={30} />
-          </TouchableOpacity>
-        )
-      };
-    }
-  }
-);
-
-const MainDrawer = createDrawerNavigator({
-  Main: {
-    screen: MainStackNavigator
-  }
-});
+const MainDrawer = createDrawerNavigator({ App: MainTabNavigator });
 
 export default MainDrawer;
