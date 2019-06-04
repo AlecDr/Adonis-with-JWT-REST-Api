@@ -15,24 +15,30 @@ const MainTabNavigator = createBottomTabNavigator(
     Map: {
       screen: MapStack,
       navigationOptions: {
-        tabBarIcon: <Icon style={{ fontSize: 20 }} name="mapbox" />,
-        tabBarColor: "#ff6064",
-        headerTitle: "Profile",
-        header: null
+        tabBarIcon: ({ tintColor }) => (
+          <Icon color={tintColor} style={{ fontSize: 20 }} name="mapbox" />
+        ),
+        headerTitle: "Profile"
       }
     },
     Profile: {
       screen: UserProfileStack,
       navigationOptions: {
-        tabBarIcon: <FAIcon style={{ fontSize: 20 }} name="user" />,
-        tabBarColor: "#ff7a7d",
-        headerTitle: "Profile",
-        header: null
+        tabBarIcon: ({ tintColor }) => (
+          <FAIcon color={tintColor} style={{ fontSize: 20 }} name="user" />
+        ),
+        headerTitle: "Profile"
       }
     }
   },
   {
-    shifting: true
+    tabBarOptions: {
+      activeTintColor: "white",
+      inactiveTintColor: "#ffa5a7",
+      style: {
+        backgroundColor: "#ff6064"
+      }
+    }
   }
 );
 
