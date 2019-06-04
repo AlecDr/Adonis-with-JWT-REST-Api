@@ -18,7 +18,7 @@ import {
   SuccessText
 } from "./styles";
 
-import LoadingIcon from "../../components/LoadingIcon";
+import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 import api from "../../services/api";
 import reactotron from "reactotron-react-native";
 

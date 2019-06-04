@@ -1,13 +1,40 @@
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import React from "react";
+import { createBottomTabNavigator } from "react-navigation";
 import { SignIn, SignUp } from "../pages/index";
 
-const AuthStack = createMaterialBottomTabNavigator(
+import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import EIcon from "react-native-vector-icons/Entypo";
+
+const AuthStack = createBottomTabNavigator(
   {
-    "Sign In": SignIn,
-    "Sign Up": SignUp
+    "Sign In": {
+      screen: SignIn,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <MIcon color={tintColor} style={{ fontSize: 20 }} name="login" />
+        ),
+        headerTitle: "Profile"
+      }
+    },
+    "Sign Up": {
+      screen: SignUp,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <EIcon color={tintColor} style={{ fontSize: 20 }} name="user" />
+        ),
+        headerTitle: "Profile"
+      }
+    }
   },
   {
-    shifting: true
+    tabBarOptions: {
+      activeTintColor: "#ffeaeb",
+      inactiveTintColor: "#ffa5a7",
+      style: {
+        backgroundColor: "#ff6064"
+      },
+      keyboardHidesTabBar: true
+    }
   }
 );
 

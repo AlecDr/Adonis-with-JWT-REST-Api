@@ -9,6 +9,7 @@ import FAIcon from "react-native-vector-icons/FontAwesome5";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import MapStack from "./MapStack";
 import UserProfileStack from "./UserProfileStack";
+import CustomDrawerComponent from "../components/CustomDrawerComponent/CustomDrawerComponent";
 
 const MainTabNavigator = createBottomTabNavigator(
   {
@@ -42,6 +43,9 @@ const MainTabNavigator = createBottomTabNavigator(
   }
 );
 
-const MainDrawer = createDrawerNavigator({ App: MainTabNavigator });
+const MainDrawer = createDrawerNavigator(
+  { App: MainTabNavigator },
+  { contentComponent: CustomDrawerComponent }
+);
 
 export default MainDrawer;

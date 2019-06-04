@@ -9,7 +9,7 @@ import { Text, ButtonText, MainContainer, AuthenticateButton } from "./styles";
 
 // libs components
 import Image from "react-native-scalable-image";
-import LoadingIcon from "../../components/LoadingIcon";
+import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 
 export default class LoadingPage extends React.Component {
   state = {

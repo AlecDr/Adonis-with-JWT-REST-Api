@@ -18,7 +18,7 @@ import {
   MessagesContainer
 } from "./styles";
 
-import LoadingIcon from "../../components/LoadingIcon";
+import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 
 export default class SignUp extends React.Component {
   state = {
