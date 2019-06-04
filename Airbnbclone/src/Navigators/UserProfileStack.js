@@ -9,16 +9,24 @@ const UserProfileStack = createStackNavigator({
     screen: UserPage,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: "User",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
+        headerTitle: "Profile",
         headerLeft: (
           <TouchableOpacity
             onPress={() => {
               navigation.openDrawer();
             }}
           >
-            <Icon style={{ fontSize: 30, paddingLeft: 20 }} name="menu" />
+            <Icon
+              color="#ffeaeb"
+              style={{ fontSize: 30, paddingLeft: 20 }}
+              name="menu"
+            />
           </TouchableOpacity>
-        )
+        ),
+        headerTintColor: "#ffeaeb"
       };
     }
   }

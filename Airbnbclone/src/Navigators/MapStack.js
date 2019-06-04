@@ -9,6 +9,9 @@ const MapStack = createStackNavigator({
     screen: MapPage,
     navigationOptions: ({ navigation }) => {
       return {
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
         headerTitle: "Map",
         headerLeft: (
           <TouchableOpacity
@@ -16,9 +19,14 @@ const MapStack = createStackNavigator({
               navigation.openDrawer();
             }}
           >
-            <Icon style={{ fontSize: 30, paddingLeft: 20 }} name="menu" />
+            <Icon
+              color="#ffeaeb"
+              style={{ fontSize: 30, paddingLeft: 20 }}
+              name="menu"
+            />
           </TouchableOpacity>
-        )
+        ),
+        headerTintColor: "#ffeaeb"
       };
     }
   }
