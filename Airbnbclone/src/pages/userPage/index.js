@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "react-native-scalable-image";
+import Shimmer from "react-native-shimmer-placeholder";
 
 // custom components
 import {
@@ -8,7 +9,12 @@ import {
   UserNameText,
   UserEmailText
 } from "./styles";
-import { SafeAreaView, Dimensions } from "react-native";
+import {
+  SafeAreaView,
+  Dimensions,
+  StyleSheet,
+  AsyncStorage
+} from "react-native";
 
 export default class UserPage extends React.Component {
   state = {
@@ -17,27 +23,64 @@ export default class UserPage extends React.Component {
   };
 
   componentDidMount() {
-    this.loadUserInfo();
+    setTimeout(() => {
+      this.loadUserInfo();
+    }, 2000);
   }
 
-  loadUserInfo = async () => {};
+  loadUserInfo = async () => {
+    const userName = await AsyncStorage.getItem("user_name");
+    const userEmail = await AsyncStorage.getItem("user_email");
 
-  renderUserInfo = () => {};
+    this.setState({
+      loading: false,
+      userData: {
+        userName,
+        userEmail
+      }
+    });
+  };
 
-  render() {
-    return (
-      <SafeAreaView>
+  renderUserInfo = () => {
+    if (this.state.loading) {
+      return (
+        <Container>
+          <Shimmer
+            style={{ marginVertical: 10, borderRadius: 100 }}
+            autoRun
+            width={Dimensions.get("window").width * 0.35}
+            height={Dimensions.get("window").height * 0.17}
+          />
+          <Shimmer
+            autoRun
+            width={Dimensions.get("window").width * 0.5}
+            height={16}
+          />
+          <Shimmer
+            autoRun
+            style={{ marginVertical: 10 }}
+            width={Dimensions.get("window").width * 0.45}
+            height={10}
+          />
+        </Container>
+      );
+    } else {
+      return (
         <Container>
           <Image
             width={Dimensions.get("window").width * 0.35}
             source={require("../../images/default-user.png")}
           />
           <UserInfoContainer>
-            <UserNameText>My very long unique name</UserNameText>
-            <UserEmailText>Some@dumbemail.com</UserEmailText>
+            <UserNameText>{this.state.userData.userName}</UserNameText>
+            <UserEmailText>{this.state.userData.userEmail}</UserEmailText>
           </UserInfoContainer>
         </Container>
-      </SafeAreaView>
-    );
+      );
+    }
+  };
+
+  render() {
+    return <SafeAreaView>{this.renderUserInfo()}</SafeAreaView>;
   }
 }

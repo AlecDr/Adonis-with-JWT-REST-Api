@@ -1,4 +1,8 @@
 rootProject.name = 'Airbnbclone'
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
+include ':react-native-shimmer'
+project(':react-native-shimmer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-shimmer/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 include ':react-native-gesture-handler'
