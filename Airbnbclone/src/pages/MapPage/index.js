@@ -4,10 +4,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 // custom components
 import { Container, FindMeButton } from "./styles";
+import { PermissionsAndroid } from "react-native";
 
 export default class MapPage extends React.Component {
   state = {
-    location: [-56.00663, -28.65408]
+    location: [-56.00663, -28.65408],
+    userLocationPermission: false
   };
 
   componentWillMount() {
@@ -18,7 +20,18 @@ export default class MapPage extends React.Component {
 
   componentDidMount() {
     Mapbox.setTelemetryEnabled(false);
+    this.checkUserLocationPermission();
   }
+
+  checkUserLocationPermission = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+    );
+
+    this.setState({
+      userLocationPermission: granted
+    });
+  };
 
   findMeHandler = async () => {
     navigator.geolocation.getCurrentPosition(position => {
@@ -44,7 +57,7 @@ export default class MapPage extends React.Component {
             animationDuration={2000}
             centerCoordinate={this.state.location}
           />
-          <Mapbox.UserLocation />
+          {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
         </Mapbox.MapView>
 
         <FindMeButton onPress={this.findMeHandler}>
