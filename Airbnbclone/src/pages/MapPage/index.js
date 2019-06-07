@@ -34,11 +34,15 @@ export default class MapPage extends React.Component {
   };
 
   findMeHandler = async () => {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.setState({
-        location: [position.coords.longitude, position.coords.latitude]
-      });
-    });
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          location: [position.coords.longitude, position.coords.latitude]
+        });
+      },
+      null,
+      { enableHighAccuracy: true, timeout: 3000, maximumAge: 3000 }
+    );
   };
 
   render() {
@@ -54,7 +58,6 @@ export default class MapPage extends React.Component {
           <Mapbox.Camera
             zoomLevel={13}
             animationMode={"flyTo"}
-            animationDuration={2000}
             centerCoordinate={this.state.location}
           />
           {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
