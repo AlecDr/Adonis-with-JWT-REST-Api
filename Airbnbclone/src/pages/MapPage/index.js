@@ -1,6 +1,7 @@
 import React from "react";
 import Mapbox from "@react-native-mapbox-gl/maps";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Toast from "react-native-root-toast";
 
 // custom components
 import { Container, FindMeButton } from "./styles";
@@ -14,7 +15,7 @@ export default class MapPage extends React.Component {
 
   componentWillMount() {
     Mapbox.setAccessToken(
-      "pk.eyJ1IjoiYWxlY2RyIiwiYSI6ImNqc3hiOTViaDBrNWU0YW14dDA2YjNvdTYifQ.fwUsz-HyzY4STwp9A61G9Q"
+      "pk.eyJ1IjoiYWxlY2RyIiwiYSI6ImNqd21xeHlnbDBldHk0OGtlc2E0dmExbDEifQ.6j75oBJ1XdFbgbmFc4W7Fw"
     );
   }
 
@@ -40,7 +41,21 @@ export default class MapPage extends React.Component {
           location: [position.coords.longitude, position.coords.latitude]
         });
       },
-      null,
+      error => {
+        let toast = Toast.show("Your location is not accessible right now!", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP + 45,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: "#880e4f",
+          delay: 100
+        });
+
+        setTimeout(function() {
+          Toast.hide(toast);
+        }, 5000);
+      },
       { enableHighAccuracy: true, timeout: 3000, maximumAge: 3000 }
     );
   };
