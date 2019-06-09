@@ -27,7 +27,11 @@ export default class LoadingIcon extends React.Component {
 
     return (
       <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-        <Icon name="loading" size={80} color="#ff7a7d" />
+        <Icon
+          name="loading"
+          size={this.props.size ? this.props.size : 80}
+          color="#ff7a7d"
+        />
       </Animated.View>
     );
   }

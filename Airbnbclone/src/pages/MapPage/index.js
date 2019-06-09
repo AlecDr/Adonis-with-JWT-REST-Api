@@ -3,14 +3,21 @@ import Mapbox from "@react-native-mapbox-gl/maps";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 
+import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 // custom components
-import { Container, FindMeButton } from "./styles";
+import {
+  Container,
+  FindMeButton,
+  BottomMapContainer,
+  LoadingLocationContainer
+} from "./styles";
 import { PermissionsAndroid } from "react-native";
 
 export default class MapPage extends React.Component {
   state = {
     location: [-56.00663, -28.65408],
-    userLocationPermission: false
+    userLocationPermission: false,
+    loadingLocation: false
   };
 
   componentWillMount() {
@@ -35,10 +42,12 @@ export default class MapPage extends React.Component {
   };
 
   findMeHandler = async () => {
+    this.setState({ loadingLocation: true });
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
-          location: [position.coords.longitude, position.coords.latitude]
+          location: [position.coords.longitude, position.coords.latitude],
+          loadingLocation: false
         });
       },
       error => {
@@ -51,12 +60,12 @@ export default class MapPage extends React.Component {
           backgroundColor: "#880e4f",
           delay: 100
         });
-
+        this.setState({ loadingLocation: false });
         setTimeout(function() {
           Toast.hide(toast);
         }, 5000);
       },
-      { enableHighAccuracy: true, timeout: 3000, maximumAge: 3000 }
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 5000 }
     );
   };
 
@@ -77,15 +86,19 @@ export default class MapPage extends React.Component {
           />
           {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
         </Mapbox.MapView>
-
-        <FindMeButton onPress={this.findMeHandler}>
-          <Icon
-            style={{ margin: 0, padding: 0 }}
-            name="my-location"
-            size={30}
-            color="#fff"
-          />
-        </FindMeButton>
+        <BottomMapContainer>
+          <FindMeButton onPress={this.findMeHandler}>
+            <Icon
+              style={{ margin: 0, padding: 0 }}
+              name="my-location"
+              size={30}
+              color="#fff"
+            />
+          </FindMeButton>
+          <LoadingLocationContainer>
+            {this.state.loadingLocation ? <LoadingIcon size={50} /> : null}
+          </LoadingLocationContainer>
+        </BottomMapContainer>
       </Container>
     );
   }

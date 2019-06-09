@@ -1,9 +1,6 @@
 import React from "react";
 import { AsyncStorage, Dimensions } from "react-native";
 
-// navigation
-import { SwitchActions } from "react-navigation";
-
 // custom components
 import { Text, ButtonText, MainContainer, AuthenticateButton } from "./styles";
 
