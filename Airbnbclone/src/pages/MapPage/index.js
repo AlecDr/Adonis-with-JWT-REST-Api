@@ -2,6 +2,7 @@ import React from "react";
 import Mapbox from "@react-native-mapbox-gl/maps";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
+import axios from "../../services/api";
 
 import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 // custom components
@@ -11,13 +12,15 @@ import {
   BottomMapContainer,
   LoadingLocationContainer
 } from "./styles";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, AsyncStorage } from "react-native";
 
 export default class MapPage extends React.Component {
   state = {
     location: [-56.00663, -28.65408],
     userLocationPermission: false,
-    loadingLocation: false
+    loadingLocation: false,
+    loadingProperties: false,
+    userToken: null
   };
 
   componentWillMount() {
@@ -30,6 +33,54 @@ export default class MapPage extends React.Component {
     Mapbox.setTelemetryEnabled(false);
     this.checkUserLocationPermission();
   }
+
+  fetchProperties = async ({ geometry }) => {
+    const longitude = geometry.coordinates[0];
+    const latitude = geometry.coordinates[1];
+    const token = await AsyncStorage.getItem("user_token");
+
+    this.setState({
+      loadingProperties: true
+    });
+
+    try {
+      const response = await axios.get("/properties", {
+        params: {
+          token,
+          latitude,
+          longitude,
+          distance: 10
+        }
+      });
+
+      this.setState({
+        loadingProperties: false
+      });
+
+      Toast.show(JSON.stringify(response.data), {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP + 45,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        backgroundColor: "#880e4f",
+        delay: 100
+      });
+    } catch (error) {
+      Toast.show(JSON.stringify(error.message), {
+        duration: 10000,
+        position: Toast.positions.TOP + 45,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        backgroundColor: "#880e4f",
+        delay: 100
+      });
+      this.setState({
+        loadingProperties: false
+      });
+    }
+  };
 
   checkUserLocationPermission = async () => {
     const granted = await PermissionsAndroid.request(
@@ -78,13 +129,15 @@ export default class MapPage extends React.Component {
           styleURL={Mapbox.StyleURL.Light}
           attributionEnabled={false}
           style={{ flex: 1 }}
+          onRegionDidChange={this.fetchProperties}
         >
           <Mapbox.Camera
-            zoomLevel={13}
+            zoomLevel={15}
             animationMode={"flyTo"}
             centerCoordinate={this.state.location}
           />
           {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
+          <Mapbox.PointAnnotation coordinate={[-56.00663, -28.65408]} />
         </Mapbox.MapView>
         <BottomMapContainer>
           <FindMeButton onPress={this.findMeHandler}>
@@ -96,7 +149,9 @@ export default class MapPage extends React.Component {
             />
           </FindMeButton>
           <LoadingLocationContainer>
-            {this.state.loadingLocation ? <LoadingIcon size={50} /> : null}
+            {this.state.loadingLocation || this.state.loadingProperties ? (
+              <LoadingIcon size={50} />
+            ) : null}
           </LoadingLocationContainer>
         </BottomMapContainer>
       </Container>
