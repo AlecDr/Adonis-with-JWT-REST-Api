@@ -9,12 +9,7 @@ import {
   UserNameText,
   UserEmailText
 } from "./styles";
-import {
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-  AsyncStorage
-} from "react-native";
+import { SafeAreaView, Dimensions, AsyncStorage } from "react-native";
 
 export default class UserPage extends React.Component {
   state = {

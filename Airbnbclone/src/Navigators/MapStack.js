@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "react-navigation";
 import { TouchableOpacity } from "react-native";
-import { MapPage } from "../pages/index";
+import { MapPage, AddPropertyPage } from "../pages/index";
 
 const MapStack = createStackNavigator({
   MapPage: {
@@ -27,7 +27,9 @@ const MapStack = createStackNavigator({
           </TouchableOpacity>
         ),
         headerRight: (
-          <TouchableOpacity onPress={() => null}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AddPropertyPage")}
+          >
             <Icon
               color="#ffeaeb"
               style={{ fontSize: 30, paddingRight: 20 }}
@@ -35,6 +37,18 @@ const MapStack = createStackNavigator({
             />
           </TouchableOpacity>
         ),
+        headerTintColor: "#ffeaeb"
+      };
+    }
+  },
+  AddPropertyPage: {
+    screen: AddPropertyPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: "Add a property",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
         headerTintColor: "#ffeaeb"
       };
     }
