@@ -20,7 +20,8 @@ export default class MapPage extends React.Component {
     userLocationPermission: false,
     loadingLocation: false,
     loadingProperties: false,
-    userToken: null
+    userToken: null,
+    properties: []
   };
 
   componentWillMount() {
@@ -31,40 +32,41 @@ export default class MapPage extends React.Component {
 
   componentDidMount() {
     Mapbox.setTelemetryEnabled(false);
+    this.fetchUserToken();
     this.checkUserLocationPermission();
   }
+
+  fetchUserToken = async () => {
+    const token = await AsyncStorage.getItem("user_token");
+    this.setState({ userToken: token });
+  };
 
   fetchProperties = async ({ geometry }) => {
     const longitude = geometry.coordinates[0];
     const latitude = geometry.coordinates[1];
-    const token = await AsyncStorage.getItem("user_token");
+    if (!this.state.userToken) {
+      this.fetchUserToken();
+    }
 
     this.setState({
-      loadingProperties: true
+      loadingProperties: true,
+      properties: []
     });
 
     try {
       const response = await axios.get("/properties", {
         params: {
-          token,
+          token: this.state.userToken,
           latitude,
           longitude,
           distance: 10
         }
       });
 
+      const properties = response.data;
       this.setState({
-        loadingProperties: false
-      });
-
-      Toast.show(JSON.stringify(response.data), {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.TOP + 45,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        backgroundColor: "#880e4f",
-        delay: 100
+        loadingProperties: false,
+        properties: properties
       });
     } catch (error) {
       Toast.show(JSON.stringify(error.message), {
@@ -116,8 +118,18 @@ export default class MapPage extends React.Component {
           Toast.hide(toast);
         }, 5000);
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 5000 }
+      { enableHighAccuracy: true, timeout: 5000 }
     );
+  };
+
+  renderProperties = () => {
+    return this.state.properties.map((property, index) => (
+      <Mapbox.PointAnnotation
+        id={index.toString()}
+        key={index}
+        coordinate={[property.longitude, property.latitude]}
+      />
+    ));
   };
 
   render() {
@@ -137,7 +149,7 @@ export default class MapPage extends React.Component {
             centerCoordinate={this.state.location}
           />
           {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
-          <Mapbox.PointAnnotation coordinate={[-56.00663, -28.65408]} />
+          {this.renderProperties()}
         </Mapbox.MapView>
         <BottomMapContainer>
           <FindMeButton onPress={this.findMeHandler}>
