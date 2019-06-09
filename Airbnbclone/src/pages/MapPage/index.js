@@ -31,9 +31,9 @@ export default class MapPage extends React.Component {
   }
 
   componentDidMount() {
-    Mapbox.setTelemetryEnabled(false);
-    this.fetchUserToken();
     this.checkUserLocationPermission();
+    this.fetchUserToken();
+    Mapbox.setTelemetryEnabled(false);
   }
 
   fetchUserToken = async () => {
@@ -85,12 +85,16 @@ export default class MapPage extends React.Component {
   };
 
   checkUserLocationPermission = async () => {
-    const granted = await PermissionsAndroid.request(
+    const corseLocationPermission = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
     );
 
+    const fineLocationPermission = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
+
     this.setState({
-      userLocationPermission: granted
+      userLocationPermission: corseLocationPermission && fineLocationPermission
     });
   };
 
@@ -118,7 +122,7 @@ export default class MapPage extends React.Component {
           Toast.hide(toast);
         }, 5000);
       },
-      { enableHighAccuracy: true, timeout: 5000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 }
     );
   };
 
