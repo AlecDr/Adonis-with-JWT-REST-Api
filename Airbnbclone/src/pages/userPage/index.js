@@ -46,10 +46,10 @@ export default class UserPage extends React.Component {
       return (
         <Container>
           <Shimmer
-            style={{ marginVertical: 10, borderRadius: 100 }}
+            style={{ marginVertical: 10, borderRadius: 50 }}
             autoRun
-            width={Dimensions.get("window").width * 0.35}
-            height={Dimensions.get("window").height * 0.17}
+            width={100}
+            height={100}
           />
           <Shimmer
             autoRun

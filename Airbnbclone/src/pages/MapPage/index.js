@@ -17,7 +17,6 @@ import { PermissionsAndroid, AsyncStorage } from "react-native";
 export default class MapPage extends React.Component {
   state = {
     location: [-56.00663, -28.65408],
-    userLocation: [0, 0],
     userLocationPermission: false,
     loadingLocation: false,
     loadingProperties: false,
@@ -115,26 +114,46 @@ export default class MapPage extends React.Component {
     }, 5000);
   };
 
-  findMeHandler = async () => {
+  findMeHandler = () => {
     this.setState({ loadingLocation: true });
 
     // first try with the high accuracy
     navigator.geolocation.getCurrentPosition(
       position => {
+        const longitude =
+          this.state.location[0] == position.coords.longitude
+            ? position.coords.longitude + 0.00001
+            : position.coords.longitude;
+
+        const latitude =
+          this.state.location[1] == position.coords.latitude
+            ? position.coords.latitude + 0.00001
+            : position.coords.latitude;
+
         this.setState({
-          location: [position.coords.longitude, position.coords.latitude],
+          location: [longitude, latitude],
           loadingLocation: false
         });
       },
       error => {
         /**
-         * If the high accuracy cant find the user
+         * If the high accuracy cant find the user,
          * try without it.
          */
         navigator.geolocation.getCurrentPosition(
           position => {
+            const longitude =
+              this.state.location[0] === position.coords.longitude
+                ? position.coords.longitude + 0.00001
+                : position.coords.longitude;
+
+            const latitude =
+              this.state.location[1] === position.coords.latitude
+                ? position.coords.latitude + 0.00001
+                : position.coords.latitude;
+
             this.setState({
-              location: [position.coords.longitude, position.coords.latitude],
+              location: [longitude, latitude],
               loadingLocation: false
             });
           },
