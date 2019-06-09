@@ -30,7 +30,7 @@ export default class LoadingIcon extends React.Component {
         <Icon
           name="loading"
           size={this.props.size ? this.props.size : 80}
-          color="#ff7a7d"
+          color={this.props.color ? this.props.color : "#ff7a7d"}
         />
       </Animated.View>
     );

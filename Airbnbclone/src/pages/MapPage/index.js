@@ -1,5 +1,5 @@
 import React from "react";
-import Mapbox from "@react-native-mapbox-gl/maps";
+import MapboxGL from "@react-native-mapbox-gl/maps";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import axios from "../../services/api";
@@ -17,6 +17,7 @@ import { PermissionsAndroid, AsyncStorage } from "react-native";
 export default class MapPage extends React.Component {
   state = {
     location: [-56.00663, -28.65408],
+    userLocation: [0, 0],
     userLocationPermission: false,
     loadingLocation: false,
     loadingProperties: false,
@@ -25,7 +26,7 @@ export default class MapPage extends React.Component {
   };
 
   componentWillMount() {
-    Mapbox.setAccessToken(
+    MapboxGL.setAccessToken(
       "pk.eyJ1IjoiYWxlY2RyIiwiYSI6ImNqd21xeHlnbDBldHk0OGtlc2E0dmExbDEifQ.6j75oBJ1XdFbgbmFc4W7Fw"
     );
   }
@@ -33,7 +34,7 @@ export default class MapPage extends React.Component {
   componentDidMount() {
     this.checkUserLocationPermission();
     this.fetchUserToken();
-    Mapbox.setTelemetryEnabled(false);
+    MapboxGL.setTelemetryEnabled(false);
   }
 
   fetchUserToken = async () => {
@@ -98,8 +99,26 @@ export default class MapPage extends React.Component {
     });
   };
 
+  showLocationNotAccessibleError = () => {
+    let toast = Toast.show("Your location is not accessible right now!", {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.TOP + 45,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: "#880e4f",
+      delay: 100
+    });
+    this.setState({ loadingLocation: false });
+    setTimeout(function() {
+      Toast.hide(toast);
+    }, 5000);
+  };
+
   findMeHandler = async () => {
     this.setState({ loadingLocation: true });
+
+    // first try with the high accuracy
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -108,27 +127,30 @@ export default class MapPage extends React.Component {
         });
       },
       error => {
-        let toast = Toast.show("Your location is not accessible right now!", {
-          duration: Toast.durations.LONG,
-          position: Toast.positions.TOP + 45,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-          backgroundColor: "#880e4f",
-          delay: 100
-        });
-        this.setState({ loadingLocation: false });
-        setTimeout(function() {
-          Toast.hide(toast);
-        }, 5000);
+        /**
+         * If the high accuracy cant find the user
+         * try without it.
+         */
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.setState({
+              location: [position.coords.longitude, position.coords.latitude],
+              loadingLocation: false
+            });
+          },
+          error => {
+            this.showLocationNotAccessibleError();
+          },
+          { enableHighAccuracy: false, timeout: 10000, maximumAge: 15000 }
+        );
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }
     );
   };
 
   renderProperties = () => {
     return this.state.properties.map((property, index) => (
-      <Mapbox.PointAnnotation
+      <MapboxGL.PointAnnotation
         id={index.toString()}
         key={index}
         coordinate={[property.longitude, property.latitude]}
@@ -139,22 +161,22 @@ export default class MapPage extends React.Component {
   render() {
     return (
       <Container>
-        <Mapbox.MapView
+        <MapboxGL.MapView
           animated={true}
           logoEnabled={false}
-          styleURL={Mapbox.StyleURL.Light}
+          styleURL={MapboxGL.StyleURL.Light}
           attributionEnabled={false}
           style={{ flex: 1 }}
           onRegionDidChange={this.fetchProperties}
         >
-          <Mapbox.Camera
+          <MapboxGL.Camera
             zoomLevel={15}
             animationMode={"flyTo"}
             centerCoordinate={this.state.location}
           />
-          {this.state.userLocationPermission ? <Mapbox.UserLocation /> : null}
+          {this.state.userLocationPermission ? <MapboxGL.UserLocation /> : null}
           {this.renderProperties()}
-        </Mapbox.MapView>
+        </MapboxGL.MapView>
         <BottomMapContainer>
           <FindMeButton onPress={this.findMeHandler}>
             <Icon
@@ -166,7 +188,7 @@ export default class MapPage extends React.Component {
           </FindMeButton>
           <LoadingLocationContainer>
             {this.state.loadingLocation || this.state.loadingProperties ? (
-              <LoadingIcon size={50} />
+              <LoadingIcon size={50} color="#880e4f" />
             ) : null}
           </LoadingLocationContainer>
         </BottomMapContainer>
