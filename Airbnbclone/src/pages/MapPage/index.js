@@ -1,5 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
+import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import axios from "../../services/api";
@@ -194,6 +195,15 @@ export default class MapPage extends React.Component {
             ) : null}
           </LoadingLocationContainer>
         </BottomMapContainer>
+        <ActionButton buttonColor="#880e4f">
+          <ActionButton.Item
+            buttonColor="#880e4f"
+            title="New Property"
+            onPress={() => this.props.navigation.navigate("AddPropertyPage")}
+          >
+            <Icon name="create" style={{ color: "white" }} />
+          </ActionButton.Item>
+        </ActionButton>
       </Container>
     );
   }
