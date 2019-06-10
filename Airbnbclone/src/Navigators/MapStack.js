@@ -26,17 +26,7 @@ const MapStack = createStackNavigator({
             />
           </TouchableOpacity>
         ),
-        headerRight: (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("AddPropertyPage")}
-          >
-            <Icon
-              color="#ffeaeb"
-              style={{ fontSize: 30, paddingRight: 20 }}
-              name="plus"
-            />
-          </TouchableOpacity>
-        ),
+
         headerTintColor: "#ffeaeb"
       };
     }
