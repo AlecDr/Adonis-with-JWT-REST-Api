@@ -188,14 +188,6 @@ export default class MapPage extends React.Component {
           {this.renderProperties()}
         </MapboxGL.MapView>
         <BottomMapContainer>
-          <FindMeButton onPress={this.findMeHandler}>
-            <Icon
-              style={{ margin: 0, padding: 0 }}
-              name="my-location"
-              size={30}
-              color="#fff"
-            />
-          </FindMeButton>
           <LoadingLocationContainer>
             {this.state.loadingLocation || this.state.loadingProperties ? (
               <LoadingIcon size={50} color="#880e4f" />
