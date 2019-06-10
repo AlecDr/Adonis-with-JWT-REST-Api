@@ -114,26 +114,30 @@ export default class MapPage extends React.Component {
     }, 5000);
   };
 
+  handlePositionChange = position => {
+    const longitude =
+      this.state.location[0] == position.coords.longitude
+        ? position.coords.longitude + 0.00001
+        : position.coords.longitude;
+
+    const latitude =
+      this.state.location[1] == position.coords.latitude
+        ? position.coords.latitude + 0.00001
+        : position.coords.latitude;
+
+    this.setState({
+      location: [longitude, latitude],
+      loadingLocation: false
+    });
+  };
+
   findMeHandler = () => {
     this.setState({ loadingLocation: true });
 
     // first try with the high accuracy
     navigator.geolocation.getCurrentPosition(
       position => {
-        const longitude =
-          this.state.location[0] == position.coords.longitude
-            ? position.coords.longitude + 0.00001
-            : position.coords.longitude;
-
-        const latitude =
-          this.state.location[1] == position.coords.latitude
-            ? position.coords.latitude + 0.00001
-            : position.coords.latitude;
-
-        this.setState({
-          location: [longitude, latitude],
-          loadingLocation: false
-        });
+        this.handlePositionChange(position);
       },
       error => {
         /**
@@ -142,20 +146,7 @@ export default class MapPage extends React.Component {
          */
         navigator.geolocation.getCurrentPosition(
           position => {
-            const longitude =
-              this.state.location[0] === position.coords.longitude
-                ? position.coords.longitude + 0.00001
-                : position.coords.longitude;
-
-            const latitude =
-              this.state.location[1] === position.coords.latitude
-                ? position.coords.latitude + 0.00001
-                : position.coords.latitude;
-
-            this.setState({
-              location: [longitude, latitude],
-              loadingLocation: false
-            });
+            this.handlePositionChange(position);
           },
           error => {
             this.showLocationNotAccessibleError();
