@@ -169,30 +169,41 @@ export default class MapPage extends React.Component {
     ));
   };
 
+  navigateToAddPropertyPage = () => {
+    this.props.navigation.navigate("AddPropertyPage");
+  };
+
+  handleFabItemPress = name => {
+    switch (name) {
+      case "btn_add_property":
+        this.navigateToAddPropertyPage();
+        break;
+      case "btn_find":
+        this.findMeHandler();
+        break;
+      default:
+        this.findMeHandler();
+    }
+  };
+
   renderFabs = () => {
     const actions = [
       {
         text: "New property",
         icon: <Icon size={20} name="create" style={{ color: "white" }} />,
-        name: "bt_add_property",
+        name: "btn_add_property",
         position: 1
       },
       {
         text: "Find me!",
         icon: <Icon size={20} name="my-location" style={{ color: "white" }} />,
-        name: "bt_find",
+        name: "btn_find",
         position: 2
       }
     ];
 
     return (
-      <FloatingAction
-        size={40}
-        actions={actions}
-        onPressItem={name => {
-          console.log(`selected button: ${name}`);
-        }}
-      />
+      <FloatingAction onPressItem={this.handleFabItemPress} actions={actions} />
     );
   };
 
