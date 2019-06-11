@@ -12,3 +12,19 @@ export const MapContainer = styled.View`
 export const FormContainer = styled.View`
   flex: 1;
 `;
+
+export const LoadingLocationContainer = styled.View`
+  padding: 1px;
+  z-index: 100;
+`;
+
+export const BottomMapContainer = styled.View`
+  position: absolute;
+  z-index: 100;
+  bottom: 10;
+  padding: 0px 10px;
+  margin: 0;
+  width: 100%;
+  align-items: center;
+  flex-direction: row;
+`;
