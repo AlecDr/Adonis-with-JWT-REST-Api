@@ -1,6 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
-// import ActionButton from "react-native-action-button";
+import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 // custom components
@@ -115,6 +115,46 @@ export default class AddPropertyPage extends React.Component {
     );
   };
 
+  handleFabItemPress = name => {
+    switch (name) {
+      case "btn_add_property":
+        this.navigateToAddPropertyPage();
+        break;
+      case "btn_find":
+        this.findMeHandler();
+        break;
+      default:
+        this.findMeHandler();
+    }
+  };
+
+  renderFabs = () => {
+    const actions = [
+      {
+        text: "Add Property",
+        icon: <Icon size={20} name="create" style={{ color: "white" }} />,
+        name: "btn_add_property",
+        color: "#880e4f",
+        position: 1
+      },
+      {
+        text: "Find me!",
+        icon: <Icon size={20} name="my-location" style={{ color: "white" }} />,
+        name: "btn_find",
+        color: "#880e4f",
+        position: 2
+      }
+    ];
+
+    return (
+      <FloatingAction
+        color="#880e4f"
+        onPressItem={this.handleFabItemPress}
+        actions={actions}
+      />
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -144,30 +184,7 @@ export default class AddPropertyPage extends React.Component {
         </MapContainer>
         <FormContainer />
 
-        {/* <ActionButton
-          fixNativeFeedbackRadius
-          renderIcon={() => (
-            <Icon size={30} name="add" style={{ color: "white" }} />
-          )}
-          offsetX={20}
-          offsetY={20}
-          buttonColor="#ff6064"
-        >
-          <ActionButton.Item
-            buttonColor="#880e4f"
-            title="Create property"
-            onPress={() => null}
-          >
-            <Icon size={20} name="check" style={{ color: "white" }} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#4a148c"
-            title="Find me!"
-            onPress={this.findMeHandler}
-          >
-            <Icon size={20} name="my-location" style={{ color: "white" }} />
-          </ActionButton.Item>
-        </ActionButton> */}
+        {this.renderFabs()}
       </Container>
     );
   }

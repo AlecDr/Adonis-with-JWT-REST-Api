@@ -192,18 +192,24 @@ export default class MapPage extends React.Component {
         text: "New property",
         icon: <Icon size={20} name="create" style={{ color: "white" }} />,
         name: "btn_add_property",
+        color: "#880e4f",
         position: 1
       },
       {
         text: "Find me!",
         icon: <Icon size={20} name="my-location" style={{ color: "white" }} />,
         name: "btn_find",
+        color: "#880e4f",
         position: 2
       }
     ];
 
     return (
-      <FloatingAction onPressItem={this.handleFabItemPress} actions={actions} />
+      <FloatingAction
+        color="#880e4f"
+        onPressItem={this.handleFabItemPress}
+        actions={actions}
+      />
     );
   };
 
