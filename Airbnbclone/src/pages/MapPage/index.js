@@ -1,6 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import ActionButton from "react-native-action-button";
+import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import axios from "../../services/api";
@@ -169,6 +169,33 @@ export default class MapPage extends React.Component {
     ));
   };
 
+  renderFabs = () => {
+    const actions = [
+      {
+        text: "New property",
+        icon: <Icon size={20} name="create" style={{ color: "white" }} />,
+        name: "bt_add_property",
+        position: 1
+      },
+      {
+        text: "Find me!",
+        icon: <Icon size={20} name="my-location" style={{ color: "white" }} />,
+        name: "bt_find",
+        position: 2
+      }
+    ];
+
+    return (
+      <FloatingAction
+        size={40}
+        actions={actions}
+        onPressItem={name => {
+          console.log(`selected button: ${name}`);
+        }}
+      />
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -195,29 +222,8 @@ export default class MapPage extends React.Component {
             ) : null}
           </LoadingLocationContainer>
         </BottomMapContainer>
-        <ActionButton
-          renderIcon={() => (
-            <Icon size={30} name="add" style={{ color: "white" }} />
-          )}
-          offsetX={20}
-          offsetY={20}
-          buttonColor="#ff6064"
-        >
-          <ActionButton.Item
-            buttonColor="#880e4f"
-            title="New Property"
-            onPress={() => this.props.navigation.navigate("AddPropertyPage")}
-          >
-            <Icon size={20} name="create" style={{ color: "white" }} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#4a148c"
-            title="Find me!"
-            onPress={this.findMeHandler}
-          >
-            <Icon size={20} name="my-location" style={{ color: "white" }} />
-          </ActionButton.Item>
-        </ActionButton>
+
+        {this.renderFabs()}
       </Container>
     );
   }

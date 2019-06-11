@@ -1,6 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import ActionButton from "react-native-action-button";
+// import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 // custom components
@@ -144,7 +144,8 @@ export default class AddPropertyPage extends React.Component {
         </MapContainer>
         <FormContainer />
 
-        <ActionButton
+        {/* <ActionButton
+          fixNativeFeedbackRadius
           renderIcon={() => (
             <Icon size={30} name="add" style={{ color: "white" }} />
           )}
@@ -166,7 +167,7 @@ export default class AddPropertyPage extends React.Component {
           >
             <Icon size={20} name="my-location" style={{ color: "white" }} />
           </ActionButton.Item>
-        </ActionButton>
+        </ActionButton> */}
       </Container>
     );
   }
