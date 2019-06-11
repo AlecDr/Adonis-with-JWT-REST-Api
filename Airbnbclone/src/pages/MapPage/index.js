@@ -195,20 +195,27 @@ export default class MapPage extends React.Component {
             ) : null}
           </LoadingLocationContainer>
         </BottomMapContainer>
-        <ActionButton buttonColor="#ff6064">
+        <ActionButton
+          renderIcon={() => (
+            <Icon size={30} name="add" style={{ color: "white" }} />
+          )}
+          offsetX={20}
+          offsetY={20}
+          buttonColor="#ff6064"
+        >
           <ActionButton.Item
             buttonColor="#880e4f"
             title="New Property"
             onPress={() => this.props.navigation.navigate("AddPropertyPage")}
           >
-            <Icon name="create" style={{ color: "white" }} />
+            <Icon size={20} name="create" style={{ color: "white" }} />
           </ActionButton.Item>
           <ActionButton.Item
             buttonColor="#4a148c"
             title="Find me!"
             onPress={this.findMeHandler}
           >
-            <Icon name="my-location" style={{ color: "white" }} />
+            <Icon size={20} name="my-location" style={{ color: "white" }} />
           </ActionButton.Item>
         </ActionButton>
       </Container>

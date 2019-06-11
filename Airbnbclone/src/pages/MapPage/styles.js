@@ -24,7 +24,7 @@ export const LoadingLocationContainer = styled.View`
 
 export const BottomMapContainer = styled.View`
   position: absolute;
-  bottom: 10;
+  bottom: 20;
   padding: 0px 20px;
   margin: 0;
   width: 100%;
