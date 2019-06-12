@@ -170,7 +170,7 @@ export default class MapPage extends React.Component {
   };
 
   navigateToAddPropertyPage = () => {
-    this.props.navigation.navigate("AddPropertyPage");
+    this.props.navigation.navigate("AddPropertySelectLocationPage");
   };
 
   handleFabItemPress = name => {

@@ -15,7 +15,7 @@ import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 
 import { PermissionsAndroid, AsyncStorage } from "react-native";
 
-export default class AddPropertyPage extends React.Component {
+export default class AddPropertySelectLocationPage extends React.Component {
   state = {
     location: [-56.00663, -28.65408],
     userLocationPermission: false,
@@ -117,7 +117,7 @@ export default class AddPropertyPage extends React.Component {
 
   handleFabItemPress = name => {
     switch (name) {
-      case "btn_add_property":
+      case "btn_choose_a_photo_property":
         this.navigateToAddPropertyPage();
         break;
       case "btn_find":
@@ -131,9 +131,11 @@ export default class AddPropertyPage extends React.Component {
   renderFabs = () => {
     const actions = [
       {
-        text: "Add Property",
-        icon: <Icon size={20} name="create" style={{ color: "white" }} />,
-        name: "btn_add_property",
+        text: "Next",
+        icon: (
+          <Icon size={20} name="navigate-next" style={{ color: "white" }} />
+        ),
+        name: "btn_choose_a_photo_property",
         color: "#880e4f",
         position: 1
       },
@@ -182,8 +184,6 @@ export default class AddPropertyPage extends React.Component {
             </LoadingLocationContainer>
           </BottomMapContainer>
         </MapContainer>
-        <FormContainer />
-
         {this.renderFabs()}
       </Container>
     );

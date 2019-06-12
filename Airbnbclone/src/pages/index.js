@@ -3,6 +3,13 @@ import SignIn from "./signIn";
 import MapPage from "./MapPage";
 import UserPage from "./userPage";
 import LoadingPage from "./loadingPage";
-import AddPropertyPage from "./addPropertyPage";
+import AddPropertySelectLocationPage from "./addPropertySelectLocationPage";
 
-export { SignUp, SignIn, MapPage, LoadingPage, UserPage, AddPropertyPage };
+export {
+  SignUp,
+  SignIn,
+  MapPage,
+  LoadingPage,
+  UserPage,
+  AddPropertySelectLocationPage
+};

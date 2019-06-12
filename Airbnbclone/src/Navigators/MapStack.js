@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "react-navigation";
 import { TouchableOpacity } from "react-native";
-import { MapPage, AddPropertyPage } from "../pages/index";
+import { MapPage, AddPropertySelectLocationPage } from "../pages/index";
 
 const MapStack = createStackNavigator({
   MapPage: {
@@ -31,11 +31,11 @@ const MapStack = createStackNavigator({
       };
     }
   },
-  AddPropertyPage: {
-    screen: AddPropertyPage,
+  AddPropertySelectLocationPage: {
+    screen: AddPropertySelectLocationPage,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: "Add a property",
+        headerTitle: "Select a location",
         headerStyle: {
           backgroundColor: "#d65154"
         },
