@@ -1,5 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
+import MapView from "react-native-maps";
 import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
@@ -216,7 +217,7 @@ export default class MapPage extends React.Component {
   render() {
     return (
       <Container>
-        <MapboxGL.MapView
+        {/* <MapboxGL.MapView
           animated={true}
           logoEnabled={false}
           styleURL={MapboxGL.StyleURL.Light}
@@ -231,7 +232,16 @@ export default class MapPage extends React.Component {
           />
           {this.state.userLocationPermission ? <MapboxGL.UserLocation /> : null}
           {this.renderProperties()}
-        </MapboxGL.MapView>
+        </MapboxGL.MapView> */}
+        <MapView
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+          style={{ flex: 1 }}
+        />
         <BottomMapContainer>
           <LoadingLocationContainer>
             {this.state.loadingLocation || this.state.loadingProperties ? (
