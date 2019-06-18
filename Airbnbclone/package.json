@@ -16,6 +16,7 @@
     "react-native-gesture-handler": "^1.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-linear-gradient": "^2.5.4",
+    "react-native-maps": "^0.24.2",
     "react-native-paper": "^2.15.2",
     "react-native-root-toast": "^3.1.1",
     "react-native-scalable-image": "^0.5.1",
