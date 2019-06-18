@@ -18,7 +18,12 @@ import { PermissionsAndroid, AsyncStorage } from "react-native";
 
 export default class MapPage extends React.Component {
   state = {
-    location: [-56.00663, -28.65408],
+    region: {
+      latitude: -28.65408,
+      longitude: -56.00663,
+      latitudeDelta: 0.0222,
+      longitudeDelta: 0.0222
+    },
     userLocationPermission: false,
     loadingLocation: false,
     loadingProperties: false,
@@ -96,7 +101,8 @@ export default class MapPage extends React.Component {
     );
 
     this.setState({
-      userLocationPermission: corseLocationPermission && fineLocationPermission
+      userLocationPermission:
+        corseLocationPermission && fineLocationPermission ? true : false
     });
   };
 
@@ -117,19 +123,15 @@ export default class MapPage extends React.Component {
   };
 
   handlePositionChange = position => {
-    const longitude =
-      this.state.location[0] == position.coords.longitude
-        ? position.coords.longitude + 0.00001
-        : position.coords.longitude;
-
-    const latitude =
-      this.state.location[1] == position.coords.latitude
-        ? position.coords.latitude + 0.00001
-        : position.coords.latitude;
-
-    this.setState({
-      location: [longitude, latitude],
-      loadingLocation: false
+    this.setState(oldState => {
+      return {
+        region: {
+          ...oldState.region,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        },
+        loadingLocation: false
+      };
     });
   };
 
@@ -187,6 +189,19 @@ export default class MapPage extends React.Component {
     }
   };
 
+  onRegionChange = region => {
+    this.setState(oldState => {
+      return {
+        region: {
+          latitudeDelta: region.latitudeDelta,
+          longitudeDelta: region.longitudeDelta,
+          latitude: region.latitude,
+          longitude: region.longitude
+        }
+      };
+    });
+  };
+
   renderFabs = () => {
     const actions = [
       {
@@ -217,30 +232,11 @@ export default class MapPage extends React.Component {
   render() {
     return (
       <Container>
-        {/* <MapboxGL.MapView
-          animated={true}
-          logoEnabled={false}
-          styleURL={MapboxGL.StyleURL.Light}
-          attributionEnabled={false}
-          style={{ flex: 1 }}
-          onRegionDidChange={this.fetchProperties}
-        >
-          <MapboxGL.Camera
-            zoomLevel={15}
-            animationMode={"flyTo"}
-            centerCoordinate={this.state.location}
-          />
-          {this.state.userLocationPermission ? <MapboxGL.UserLocation /> : null}
-          {this.renderProperties()}
-        </MapboxGL.MapView> */}
         <MapView
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
+          region={this.state.region}
           style={{ flex: 1 }}
+          onRegionChangeComplete={this.onRegionChange}
+          showsUserLocation={this.state.userLocationPermission}
         />
         <BottomMapContainer>
           <LoadingLocationContainer>
