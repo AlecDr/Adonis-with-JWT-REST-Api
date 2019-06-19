@@ -1,6 +1,6 @@
 import React from "react";
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
@@ -47,9 +47,10 @@ export default class MapPage extends React.Component {
     this.setState({ userToken: token });
   };
 
-  fetchProperties = async ({ geometry }) => {
-    const longitude = geometry.coordinates[0];
-    const latitude = geometry.coordinates[1];
+  fetchProperties = async () => {
+    const longitude = this.state.region.longitude;
+    const latitude = this.state.region.latitude;
+
     if (!this.state.userToken) {
       this.fetchUserToken();
     }
@@ -107,10 +108,12 @@ export default class MapPage extends React.Component {
 
   renderProperties = () => {
     return this.state.properties.map((property, index) => (
-      <MapboxGL.PointAnnotation
-        id={index.toString()}
+      <Marker
         key={index}
-        coordinate={[property.longitude, property.latitude]}
+        coordinate={{
+          latitude: property.latitude,
+          longitude: property.longitude
+        }}
       />
     ));
   };
@@ -124,11 +127,6 @@ export default class MapPage extends React.Component {
       case "btn_add_property":
         this.navigateToAddPropertyPage();
         break;
-      case "btn_find":
-        this.findMeHandler();
-        break;
-      default:
-        this.findMeHandler();
     }
   };
 
@@ -141,6 +139,8 @@ export default class MapPage extends React.Component {
         longitude: region.longitude
       }
     });
+
+    this.fetchProperties();
   };
 
   renderFabs = () => {
@@ -173,7 +173,9 @@ export default class MapPage extends React.Component {
           showsUserLocation={this.state.userLocationPermission}
           showsMyLocationButton
           onMapReady={() => setTimeout(() => this.setState({ flex: 1 }), 500)}
-        />
+        >
+          {this.renderProperties()}
+        </MapView>
         <BottomMapContainer>
           <LoadingLocationContainer>
             {this.state.loadingLocation || this.state.loadingProperties ? (
