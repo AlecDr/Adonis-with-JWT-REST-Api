@@ -24,8 +24,8 @@ export default class MapPage extends React.Component {
       latitudeDelta: 0.0222,
       longitudeDelta: 0.0222
     },
+    flex: 0,
     userLocationPermission: false,
-    loadingLocation: false,
     loadingProperties: false,
     userToken: null,
     properties: []
@@ -40,7 +40,6 @@ export default class MapPage extends React.Component {
   componentDidMount() {
     this.checkUserLocationPermission();
     this.fetchUserToken();
-    MapboxGL.setTelemetryEnabled(false);
   }
 
   fetchUserToken = async () => {
@@ -106,62 +105,6 @@ export default class MapPage extends React.Component {
     });
   };
 
-  showLocationNotAccessibleError = () => {
-    let toast = Toast.show("Your location is not accessible right now!", {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.TOP + 45,
-      shadow: true,
-      animation: true,
-      hideOnPress: true,
-      backgroundColor: "#880e4f",
-      delay: 100
-    });
-    this.setState({ loadingLocation: false });
-    setTimeout(function() {
-      Toast.hide(toast);
-    }, 5000);
-  };
-
-  handlePositionChange = position => {
-    this.setState(oldState => {
-      return {
-        region: {
-          ...oldState.region,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        },
-        loadingLocation: false
-      };
-    });
-  };
-
-  findMeHandler = () => {
-    this.setState({ loadingLocation: true });
-
-    // first try with the high accuracy
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.handlePositionChange(position);
-      },
-      error => {
-        /**
-         * If the high accuracy cant find the user,
-         * try without it.
-         */
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            this.handlePositionChange(position);
-          },
-          error => {
-            this.showLocationNotAccessibleError();
-          },
-          { enableHighAccuracy: false, timeout: 10000, maximumAge: 15000 }
-        );
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }
-    );
-  };
-
   renderProperties = () => {
     return this.state.properties.map((property, index) => (
       <MapboxGL.PointAnnotation
@@ -190,15 +133,13 @@ export default class MapPage extends React.Component {
   };
 
   onRegionChange = region => {
-    this.setState(oldState => {
-      return {
-        region: {
-          latitudeDelta: region.latitudeDelta,
-          longitudeDelta: region.longitudeDelta,
-          latitude: region.latitude,
-          longitude: region.longitude
-        }
-      };
+    this.setState({
+      region: {
+        latitudeDelta: region.latitudeDelta,
+        longitudeDelta: region.longitudeDelta,
+        latitude: region.latitude,
+        longitude: region.longitude
+      }
     });
   };
 
@@ -210,13 +151,6 @@ export default class MapPage extends React.Component {
         name: "btn_add_property",
         color: "#880e4f",
         position: 1
-      },
-      {
-        text: "Find me!",
-        icon: <Icon size={20} name="my-location" style={{ color: "white" }} />,
-        name: "btn_find",
-        color: "#880e4f",
-        position: 2
       }
     ];
 
@@ -234,9 +168,11 @@ export default class MapPage extends React.Component {
       <Container>
         <MapView
           region={this.state.region}
-          style={{ flex: 1 }}
+          style={{ flex: this.state.flex }}
           onRegionChangeComplete={this.onRegionChange}
           showsUserLocation={this.state.userLocationPermission}
+          showsMyLocationButton
+          onMapReady={() => setTimeout(() => this.setState({ flex: 1 }), 500)}
         />
         <BottomMapContainer>
           <LoadingLocationContainer>
