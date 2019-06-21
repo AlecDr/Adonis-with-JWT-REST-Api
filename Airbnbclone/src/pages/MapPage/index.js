@@ -1,5 +1,4 @@
 import React from "react";
-import MapboxGL from "@react-native-mapbox-gl/maps";
 import MapView, { Marker } from "react-native-maps";
 import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -30,12 +29,6 @@ export default class MapPage extends React.Component {
     userToken: null,
     properties: []
   };
-
-  componentWillMount() {
-    MapboxGL.setAccessToken(
-      "pk.eyJ1IjoiYWxlY2RyIiwiYSI6ImNqd21xeHlnbDBldHk0OGtlc2E0dmExbDEifQ.6j75oBJ1XdFbgbmFc4W7Fw"
-    );
-  }
 
   componentDidMount() {
     this.checkUserLocationPermission();

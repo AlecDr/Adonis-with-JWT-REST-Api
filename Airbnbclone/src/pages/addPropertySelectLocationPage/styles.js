@@ -9,10 +9,6 @@ export const MapContainer = styled.View`
   flex: 1;
 `;
 
-export const FormContainer = styled.View`
-  flex: 1;
-`;
-
 export const LoadingLocationContainer = styled.View`
   padding: 1px;
   z-index: 100;
