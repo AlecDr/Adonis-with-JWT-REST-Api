@@ -4,6 +4,7 @@ import MapPage from "./MapPage";
 import UserPage from "./userPage";
 import LoadingPage from "./loadingPage";
 import AddPropertySelectLocationPage from "./addPropertySelectLocationPage";
+import AddPropertyPicturesPage from "./addPropertyPicturesPage";
 
 export {
   SignUp,
@@ -11,5 +12,6 @@ export {
   MapPage,
   LoadingPage,
   UserPage,
-  AddPropertySelectLocationPage
+  AddPropertySelectLocationPage,
+  AddPropertyPicturesPage
 };

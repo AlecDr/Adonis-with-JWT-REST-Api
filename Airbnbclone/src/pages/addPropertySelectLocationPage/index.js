@@ -1,5 +1,5 @@
 import React from "react";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -21,6 +21,10 @@ export default class AddPropertySelectLocationPage extends React.Component {
       longitude: -56.00663,
       latitudeDelta: 0.0222,
       longitudeDelta: 0.0222
+    },
+    markerPosition: {
+      latitude: -28.65408,
+      longitude: -56.00663
     },
     flex: 0,
     location: [-56.00663, -28.65408],
@@ -74,6 +78,12 @@ export default class AddPropertySelectLocationPage extends React.Component {
     }
   };
 
+  navigateToAddPropertyPage = () => {
+    this.props.navigation.navigate("AddPropertyPicturesPage", {
+      coordinate: this.state.markerPosition
+    });
+  };
+
   renderFabs = () => {
     const actions = [
       {
@@ -107,7 +117,17 @@ export default class AddPropertySelectLocationPage extends React.Component {
             showsUserLocation={this.state.userLocationPermission}
             showsMyLocationButton
             onMapReady={() => setTimeout(() => this.setState({ flex: 1 }), 500)}
-          />
+          >
+            {this.state.flex ? (
+              <Marker
+                draggable
+                coordinate={{ latitude: -28.65408, longitude: -56.00663 }}
+                onDragEnd={e =>
+                  this.setState({ markerPosition: e.nativeEvent.coordinate })
+                }
+              />
+            ) : null}
+          </MapView>
           <BottomMapContainer>
             <LoadingLocationContainer>
               {this.state.loadingLocation || this.state.loadingProperties ? (

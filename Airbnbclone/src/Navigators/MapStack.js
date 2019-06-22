@@ -2,7 +2,11 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "react-navigation";
 import { TouchableOpacity } from "react-native";
-import { MapPage, AddPropertySelectLocationPage } from "../pages/index";
+import {
+  MapPage,
+  AddPropertySelectLocationPage,
+  AddPropertyPicturesPage
+} from "../pages/index";
 
 const MapStack = createStackNavigator({
   MapPage: {
@@ -36,6 +40,18 @@ const MapStack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: "Select a location",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
+        headerTintColor: "#ffeaeb"
+      };
+    }
+  },
+  AddPropertyPicturesPage: {
+    screen: AddPropertyPicturesPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: "Take some pictures!",
         headerStyle: {
           backgroundColor: "#d65154"
         },
