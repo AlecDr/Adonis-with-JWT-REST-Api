@@ -1,5 +1,15 @@
 import React from "react";
-import { Container, Title, PhotosContainer, Image } from "./styles";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+// custom components
+import {
+  Container,
+  Title,
+  PhotosContainer,
+  Image,
+  ButtonText,
+  CameraButton
+} from "./styles";
 
 export default class AddPropertyPicturesPage extends React.Component {
   state = {
@@ -29,6 +39,10 @@ export default class AddPropertyPicturesPage extends React.Component {
         >
           {this.renderPlaceholder()}
         </PhotosContainer>
+        <CameraButton>
+          <ButtonText>Take pictures</ButtonText>
+          <Icon name="camera" size={30} color="#fff" />
+        </CameraButton>
       </Container>
     );
   }

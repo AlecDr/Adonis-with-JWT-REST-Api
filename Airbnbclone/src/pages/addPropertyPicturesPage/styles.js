@@ -31,3 +31,21 @@ export const Image = styled.Image`
   align-self: center;
   border-radius: 10px;
 `;
+
+export const CameraButton = styled.TouchableOpacity`
+  width: 90%;
+  padding: 16px;
+  background-color: #ff7a7d;
+  margin: 10px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  align-self: center;
+`;
+
+export const ButtonText = styled.Text`
+  font-size: 24px;
+  color: #fff;
+  flex: 3;
+`;
