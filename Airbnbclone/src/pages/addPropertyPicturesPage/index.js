@@ -20,9 +20,17 @@ export default class AddPropertyPicturesPage extends React.Component {
 
   handlePictureButtonPress = async () => {
     try {
-      const images = await ImagePicker.openCamera({
+      const picture = await ImagePicker.openCamera({
         width: 400,
-        height: 400
+        height: 400,
+        cropping: true
+      });
+
+      this.setState(oldState => {
+        newPictures = [...oldState.pictures];
+        newPictures.push(picture.path);
+
+        return { ...oldState, pictures: newPictures };
       });
     } catch (error) {
       console.log(error);
@@ -31,11 +39,22 @@ export default class AddPropertyPicturesPage extends React.Component {
 
   handleAlbumButtonPress = async () => {
     try {
-      const images = await ImagePicker.openPicker({
+      const pictures = await ImagePicker.openPicker({
         multiple: true,
         width: 400,
         height: 400
       });
+
+      if (pictures.length) {
+        pictures.map(picture =>
+          this.setState(oldState => {
+            newPictures = [...oldState.pictures];
+            newPictures.push(picture.path);
+
+            return { ...oldState, pictures: newPictures };
+          })
+        );
+      }
     } catch (error) {
       console.log(error);
     }

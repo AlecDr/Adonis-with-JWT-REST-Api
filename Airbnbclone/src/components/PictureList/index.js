@@ -1,11 +1,31 @@
 import React from "react";
-import { PhotosContainer, Image } from "./styles";
+import { PhotosContainer } from "./styles";
+
+// custom components
+import PlaceholderPicture from "../PlaceholderPicture";
+import PropertyPicture from "../PropertyPicture";
 
 const PictureList = props => {
-  return props.pictures.length > 0 ? null : (
-    <PhotosContainer bounces horizontal showsHorizontalScrollIndicator={false}>
+  return props.pictures.length > 0 ? (
+    <PhotosContainer
+      bounces
+      contentContainerStyle={{ paddingRight: 40 }}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    >
+      {props.pictures.map((picture, index) => (
+        <PropertyPicture key={index} path={picture} />
+      ))}
+    </PhotosContainer>
+  ) : (
+    <PhotosContainer
+      contentContainerStyle={{ paddingRight: 40 }}
+      bounces
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    >
       {[1, 2, 3, 4, 5, 6].map(index => (
-        <Image key={index} source={require("../../images/placeholder.png")} />
+        <PlaceholderPicture key={index} />
       ))}
     </PhotosContainer>
   );
