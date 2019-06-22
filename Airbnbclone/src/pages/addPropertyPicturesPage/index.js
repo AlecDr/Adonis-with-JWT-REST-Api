@@ -9,7 +9,8 @@ import {
   PhotosContainer,
   Image,
   ButtonText,
-  CameraButton
+  ButtonsContainer,
+  Button
 } from "./styles";
 
 export default class AddPropertyPicturesPage extends React.Component {
@@ -29,14 +30,27 @@ export default class AddPropertyPicturesPage extends React.Component {
     return items;
   };
 
-  handlePictureButtonPress = () => {
-    ImagePicker.openCamera({
-      width: 400,
-      height: 400,
-      cropping: true
-    }).then(image => {
-      console.log(image);
-    });
+  handlePictureButtonPress = async () => {
+    try {
+      const images = await ImagePicker.openCamera({
+        width: 400,
+        height: 400
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleAlbumButtonPress = async () => {
+    try {
+      const images = await ImagePicker.openPicker({
+        multiple: true,
+        width: 400,
+        height: 400
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -50,10 +64,17 @@ export default class AddPropertyPicturesPage extends React.Component {
         >
           {this.renderPlaceholder()}
         </PhotosContainer>
-        <CameraButton onPress={this.handlePictureButtonPress}>
-          <ButtonText>Take pictures</ButtonText>
-          <Icon name="camera" size={30} color="#fff" />
-        </CameraButton>
+        <ButtonsContainer>
+          <Button onPress={this.handlePictureButtonPress}>
+            <ButtonText>Take picture</ButtonText>
+            <Icon name="camera" size={20} color="#fff" />
+          </Button>
+
+          <Button onPress={this.handleAlbumButtonPress}>
+            <ButtonText>Open Album</ButtonText>
+            <Icon name="album" size={20} color="#fff" />
+          </Button>
+        </ButtonsContainer>
       </Container>
     );
   }
