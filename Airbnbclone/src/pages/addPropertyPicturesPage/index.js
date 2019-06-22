@@ -1,5 +1,6 @@
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import ImagePicker from "react-native-image-crop-picker";
 
 // custom components
 import {
@@ -28,6 +29,16 @@ export default class AddPropertyPicturesPage extends React.Component {
     return items;
   };
 
+  handlePictureButtonPress = () => {
+    ImagePicker.openCamera({
+      width: 400,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+    });
+  };
+
   render() {
     return (
       <Container>
@@ -39,7 +50,7 @@ export default class AddPropertyPicturesPage extends React.Component {
         >
           {this.renderPlaceholder()}
         </PhotosContainer>
-        <CameraButton>
+        <CameraButton onPress={this.handlePictureButtonPress}>
           <ButtonText>Take pictures</ButtonText>
           <Icon name="camera" size={30} color="#fff" />
         </CameraButton>
