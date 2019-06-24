@@ -9,28 +9,6 @@ export const Container = styled.KeyboardAvoidingView`
   padding: 12px;
 `;
 
-export const InputContainer = styled.View`
-  margin: 10px 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 90%;
-`;
-
-export const TextInput = styled.TextInput`
-  width: 100%;
-  color: #444;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  padding: 6px 12px;
-`;
-
-export const InputLabel = styled.Text`
-  color: #111;
-  font-size: 14px;
-  font-weight: bold;
-`;
-
 export const ButtonText = styled.Text`
   font-size: 14px;
   color: #fff;

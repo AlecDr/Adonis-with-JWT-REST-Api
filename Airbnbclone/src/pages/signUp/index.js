@@ -10,13 +10,12 @@ import {
   Button,
   ButtonText,
   Container,
-  TextInput,
-  InputContainer,
-  InputLabel,
   ErrorText,
   SuccessText,
   MessagesContainer
 } from "./styles";
+
+import InputGroup from "../../components/InputGroup";
 
 import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 
@@ -131,37 +130,34 @@ export default class SignUp extends React.Component {
             width={Dimensions.get("window").width * 0.5}
             source={require("../../images/logo.png")}
           />
-          <InputContainer>
-            <InputLabel>Name</InputLabel>
-            <TextInput
-              onChangeText={this.handleUsernameChange}
-              value={this.state.username}
-              autoCapitalize={false}
-              autoCorrect={false}
-              placeholder="Name"
-            />
-          </InputContainer>
-          <InputContainer>
-            <InputLabel>Email</InputLabel>
-            <TextInput
-              onChangeText={this.handleEmailChange}
-              value={this.state.email}
-              autoCapitalize={false}
-              autoCorrect={false}
-              placeholder="Email"
-            />
-          </InputContainer>
-          <InputContainer>
-            <InputLabel>Password</InputLabel>
-            <TextInput
-              onChangeText={this.handlePasswordChange}
-              value={this.state.password}
-              autoCapitalize={false}
-              autoCorrect={false}
-              secureTextEntry
-              placeholder="********"
-            />
-          </InputContainer>
+          <InputGroup
+            label="Name"
+            onChangeText={this.handleUsernameChange}
+            value={this.state.username}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Name"
+          />
+
+          <InputGroup
+            label="Email"
+            onChangeText={this.handleEmailChange}
+            value={this.state.email}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Email"
+          />
+
+          <InputGroup
+            label="Password"
+            onChangeText={this.handlePasswordChange}
+            value={this.state.password}
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry
+            placeholder="********"
+          />
+
           {this.renderMessages()}
           {this.renderButtonOrSpinner()}
         </Container>
