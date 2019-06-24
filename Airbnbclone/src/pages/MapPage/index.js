@@ -84,19 +84,21 @@ export default class MapPage extends React.Component {
     }
   };
 
-  checkUserLocationPermission = async () => {
-    const corseLocationPermission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-    );
+  checkUserLocationPermission = () => {
+    setTimeout(async () => {
+      const corseLocationPermission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+      );
 
-    const fineLocationPermission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    );
+      const fineLocationPermission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
 
-    this.setState({
-      userLocationPermission:
-        corseLocationPermission && fineLocationPermission ? true : false
-    });
+      this.setState({
+        userLocationPermission:
+          corseLocationPermission && fineLocationPermission ? true : false
+      });
+    }, 500);
   };
 
   renderProperties = () => {
@@ -156,29 +158,39 @@ export default class MapPage extends React.Component {
     );
   };
 
-  render() {
-    return (
-      <Container>
-        <MapView
-          region={this.state.region}
-          style={{ flex: this.state.flex }}
-          onRegionChangeComplete={this.onRegionChange}
-          showsUserLocation={this.state.userLocationPermission}
-          showsMyLocationButton
-          onMapReady={() => setTimeout(() => this.setState({ flex: 1 }), 500)}
-        >
-          {this.renderProperties()}
-        </MapView>
-        <BottomMapContainer>
-          <LoadingLocationContainer>
-            {this.state.loadingLocation || this.state.loadingProperties ? (
-              <LoadingIcon size={50} color="#880e4f" />
-            ) : null}
-          </LoadingLocationContainer>
-        </BottomMapContainer>
+  renderMap = () => {
+    if (this.state.userLocationPermission) {
+      return (
+        <Container>
+          <MapView
+            region={this.state.region}
+            style={{ flex: this.state.flex }}
+            onRegionChangeComplete={this.onRegionChange}
+            showsUserLocation={this.state.userLocationPermission}
+            showsMyLocationButton
+            onMapReady={() =>
+              setTimeout(() => this.setState({ flex: 1 }), 1000)
+            }
+          >
+            {this.renderProperties()}
+          </MapView>
+          <BottomMapContainer>
+            <LoadingLocationContainer>
+              {this.state.loadingLocation || this.state.loadingProperties ? (
+                <LoadingIcon size={50} color="#880e4f" />
+              ) : null}
+            </LoadingLocationContainer>
+          </BottomMapContainer>
 
-        {this.renderFabs()}
-      </Container>
-    );
+          {this.renderFabs()}
+        </Container>
+      );
+    } else {
+      return <Container />;
+    }
+  };
+
+  render() {
+    return this.renderMap();
   }
 }
