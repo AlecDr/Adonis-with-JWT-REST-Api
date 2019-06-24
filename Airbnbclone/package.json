@@ -12,6 +12,7 @@
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "0.59.8",
+    "react-native-emoji": "^1.8.0",
     "react-native-floating-action": "^1.17.0",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-image-crop-picker": "^0.24.1",

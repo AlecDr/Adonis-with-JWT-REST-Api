@@ -5,7 +5,8 @@ import { TouchableOpacity } from "react-native";
 import {
   MapPage,
   AddPropertySelectLocationPage,
-  AddPropertyPicturesPage
+  AddPropertyPicturesPage,
+  AddPropertyDetailsPage
 } from "../pages/index";
 
 const MapStack = createStackNavigator({
@@ -52,6 +53,18 @@ const MapStack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: "Take some pictures!",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
+        headerTintColor: "#ffeaeb"
+      };
+    }
+  },
+  AddPropertyDetailsPage: {
+    screen: AddPropertyDetailsPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: "Add the property details",
         headerStyle: {
           backgroundColor: "#d65154"
         },

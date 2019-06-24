@@ -2,6 +2,7 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ImagePicker from "react-native-image-crop-picker";
 import PictureList from "../../components/PictureList";
+import { FloatingAction } from "react-native-floating-action";
 
 // custom components
 import {
@@ -60,6 +61,49 @@ export default class AddPropertyPicturesPage extends React.Component {
     }
   };
 
+  navigateToPropertyDetailsPage = () => {
+    this.props.navigation.navigate("AddPropertyDetailsPage", {
+      coordinate: this.state.markerCoordinate,
+      pictures: this.state.pictures
+    });
+  };
+
+  handleFabItemPress = name => {
+    switch (name) {
+      case "btn_property_info":
+        this.navigateToPropertyDetailsPage();
+        break;
+    }
+  };
+
+  navigateToAddPropertyPage = () => {
+    this.props.navigation.navigate("AddPropertyPicturesPage", {
+      coordinate: this.state.markerPosition
+    });
+  };
+
+  renderFabs = () => {
+    const actions = [
+      {
+        text: "Next",
+        icon: (
+          <Icon size={20} name="playlist-edit" style={{ color: "white" }} />
+        ),
+        name: "btn_property_info",
+        color: "#880e4f",
+        position: 1
+      }
+    ];
+
+    return (
+      <FloatingAction
+        color="#880e4f"
+        onPressItem={this.handleFabItemPress}
+        actions={actions}
+      />
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -76,6 +120,8 @@ export default class AddPropertyPicturesPage extends React.Component {
             <Icon name="image-album" size={20} color="#fff" />
           </Button>
         </ButtonsContainer>
+
+        {this.renderFabs()}
       </Container>
     );
   }

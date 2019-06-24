@@ -17,6 +17,7 @@ const InputGroup = props => {
         autoCorrect={props.autoCorrect}
         placeholder={props.placeholder}
         secureTextEntry={props.secureTextEntry}
+        keyboardType={props.keyboardType ? props.keyboardType : "default"}
       />
     </InputContainer>
   );
