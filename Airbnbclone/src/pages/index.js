@@ -6,6 +6,7 @@ import LoadingPage from "./loadingPage";
 import AddPropertySelectLocationPage from "./addPropertySelectLocationPage";
 import AddPropertyPicturesPage from "./addPropertyPicturesPage";
 import AddPropertyDetailsPage from "./addPropertyDetailsPage";
+import AddPropertySubmitPage from "./addPropertySubmitPage";
 
 export {
   SignUp,
@@ -15,5 +16,6 @@ export {
   UserPage,
   AddPropertySelectLocationPage,
   AddPropertyPicturesPage,
-  AddPropertyDetailsPage
+  AddPropertyDetailsPage,
+  AddPropertySubmitPage
 };

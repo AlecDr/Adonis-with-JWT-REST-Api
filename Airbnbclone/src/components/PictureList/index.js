@@ -9,7 +9,7 @@ const PictureList = props => {
   return props.pictures.length > 0 ? (
     <PhotosContainer
       bounces
-      contentContainerStyle={{ paddingRight: 40 }}
+      contentContainerStyle={{ paddingRight: 20 }}
       horizontal
       showsHorizontalScrollIndicator={false}
     >
@@ -19,7 +19,7 @@ const PictureList = props => {
     </PhotosContainer>
   ) : (
     <PhotosContainer
-      contentContainerStyle={{ paddingRight: 40 }}
+      contentContainerStyle={{ paddingRight: 20 }}
       bounces
       horizontal
       showsHorizontalScrollIndicator={false}

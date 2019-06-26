@@ -6,7 +6,8 @@ import {
   MapPage,
   AddPropertySelectLocationPage,
   AddPropertyPicturesPage,
-  AddPropertyDetailsPage
+  AddPropertyDetailsPage,
+  AddPropertySubmitPage
 } from "../pages/index";
 
 const MapStack = createStackNavigator({
@@ -65,6 +66,18 @@ const MapStack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: "Add the property details",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
+        headerTintColor: "#ffeaeb"
+      };
+    }
+  },
+  AddPropertySubmitPage: {
+    screen: AddPropertySubmitPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: "Now check the information",
         headerStyle: {
           backgroundColor: "#d65154"
         },

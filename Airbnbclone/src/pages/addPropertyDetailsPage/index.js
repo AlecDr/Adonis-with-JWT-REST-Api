@@ -1,15 +1,15 @@
 import React from "react";
+import { FloatingAction } from "react-native-floating-action";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Emoji from "react-native-emoji";
 import {
-  Button,
-  ButtonText,
   Container,
-  ErrorText,
-  MessagesContainer,
-  SuccessText,
   HeaderContainer,
-  TitleText
+  TitleText,
+  MessagesContainer,
+  ErrorText
 } from "./styles";
 
 import InputGroup from "../../components/InputGroup";
@@ -21,34 +21,68 @@ export default class AddPropertyDetailsPage extends React.Component {
     price: 0,
     title: "",
     address: "",
-    error: "",
-    success: "",
-    loading: false
+    error: ""
   };
 
   handleTitleChange = title => this.setState({ title });
   handleAddressChange = address => this.setState({ address });
   handlePriceChange = price => this.setState({ price });
 
-  renderMessages = () => {
+  handleFabItemPress = name => {
+    switch (name) {
+      case "btn_property_info":
+        this.navigateToPropertySubmitPage();
+        break;
+    }
+  };
+
+  navigateToPropertySubmitPage = () => {
+    const { address, title, price } = this.state;
+    if (address.trim() !== "" && title.trim() !== "" && price > 0) {
+      this.props.navigation.navigate("AddPropertySubmitPage", {
+        property: {
+          coordinate: this.state.markerCoordinate,
+          title: this.state.title,
+          address: this.state.address,
+          price: this.state.price,
+          pictures: this.state.pictures
+        }
+      });
+    } else {
+      this.setState({
+        error:
+          "You must provide a valid title, address and price to your property!"
+      });
+    }
+  };
+
+  renderFabs = () => {
+    const actions = [
+      {
+        text: "Check Info",
+        icon: <Icon size={20} name="cube-send" style={{ color: "white" }} />,
+        name: "btn_property_info",
+        color: "#880e4f",
+        position: 1
+      }
+    ];
+
     return (
-      <MessagesContainer>
-        {this.state.error ? <ErrorText>{this.state.error}</ErrorText> : null}
-        {this.state.success ? (
-          <SuccessText>{this.state.success}</SuccessText>
-        ) : null}
-      </MessagesContainer>
+      <FloatingAction
+        color="#880e4f"
+        onPressItem={this.handleFabItemPress}
+        actions={actions}
+      />
     );
   };
 
-  renderButtonOrSpinner = () => {
-    return this.state.loading ? (
-      <LoadingIcon />
-    ) : (
-      <Button onPress={this.handleAuthenticate}>
-        <ButtonText>Add Property</ButtonText>
-      </Button>
-    );
+  renderErrorMessage = () => {
+    if (this.state.error != "")
+      return (
+        <MessagesContainer>
+          <ErrorText>{this.state.error}</ErrorText>
+        </MessagesContainer>
+      );
   };
 
   render() {
@@ -67,6 +101,7 @@ export default class AddPropertyDetailsPage extends React.Component {
             <TitleText>Finally, add some details</TitleText>
             <Emoji name="raised_hands" style={{ fontSize: 30 }} />
           </HeaderContainer>
+          {this.renderErrorMessage()}
           <InputGroup
             label="Title"
             onChangeText={this.handleTitleChange}
@@ -92,8 +127,8 @@ export default class AddPropertyDetailsPage extends React.Component {
             keyboardType="numeric"
             placeholder="Price"
           />
-          {this.renderButtonOrSpinner()}
         </Container>
+        {this.renderFabs()}
       </KeyboardAwareScrollView>
     );
   }

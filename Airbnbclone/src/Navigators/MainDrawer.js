@@ -37,7 +37,8 @@ const MainTabNavigator = createBottomTabNavigator(
       inactiveTintColor: "#ffa5a7",
       style: {
         backgroundColor: "#ff6064"
-      }
+      },
+      keyboardHidesTabBar: true
     }
   }
 );
