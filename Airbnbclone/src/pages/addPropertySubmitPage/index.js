@@ -8,15 +8,29 @@ import {
   Container,
   HeaderContainer,
   TitleText,
-  MessagesContainer
+  MessagesContainer,
+  ErrorText,
+  SuccessText
 } from "./styles";
+import { AsyncStorage } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default class AddPropertySubmitPage extends React.Component {
   state = {
     property: this.props.navigation.getParam("property", null),
     success: "",
     error: "",
-    loading: false
+    loading: false,
+    userToken: null
+  };
+
+  componentWillMount() {
+    this.fetchUserToken();
+  }
+
+  fetchUserToken = async () => {
+    const token = await AsyncStorage.getItem("user_token");
+    this.setState({ userToken: token });
   };
 
   renderButtonOrSpinner = () => {
@@ -41,29 +55,46 @@ export default class AddPropertySubmitPage extends React.Component {
   };
 
   handleAddProperty = async () => {
-    // try {
-    //   const { title, price, address } = this.state;
-    //   this.setState({ loading: true });
-    //   if (title.trim() !== "" && address.trim() !== "" && price > 0) {
-    //     const response = await api.post("/properties", {
-    //       title,
-    //       price,
-    //       address,
-    //       latitude: markerCoordinate.latitude,
-    //       longitude: markerCoordinate.longitude
-    //     });
-    //     const id = response.data.property.id;
-    //     this.state.pictures.map(picture => {});
-    //   } else {
-    //     this.setState({
-    //       loading: false,
-    //       error:
-    //         "Your need to inform a title, address and price for your property!"
-    //     });
-    //   }
-    // } catch (error) {
-    //   this.setState({ loading: false });
-    // }
+    try {
+      const { title, price, address } = this.state.property;
+      const { latitude, longitude } = this.state.property.coordinate;
+
+      this.setState({ loading: true });
+
+      const response = await api.post("/properties", {
+        title,
+        price,
+        address,
+        latitude,
+        longitude,
+        token: this.state.userToken
+      });
+
+      const id = response.data.property.id;
+      const data = new FormData();
+      data.append("token", this.state.userToken);
+
+      this.state.property.pictures.map((picture, index) => {
+        let random = Math.floor(Math.random() * 1000000) + 1;
+        data.append(`image`, {
+          name: `${random}${id}${index}.jpg`,
+          type: "image/jpeg",
+          uri: picture
+        });
+      });
+
+      const imagesResponse = await api.post(
+        `/properties/${id}/images/store`,
+        data
+      );
+
+      this.setState({
+        loading: false,
+        success: "Property created successfully! redirecting..."
+      });
+    } catch (error) {
+      this.setState({ loading: false, error: JSON.stringify(error) });
+    }
   };
 
   renderPropertyInfo = () => {};
@@ -82,14 +113,16 @@ export default class AddPropertySubmitPage extends React.Component {
   };
   render() {
     return (
-      <Container behavior="padding" enabled>
-        {this.renderHeader()}
-        {this.renderPropertyLocation()}
-        {this.renderPropertyInfo()}
-        {this.renderPropertyPictures()}
-        {this.renderMessages()}
-        {this.renderButtonOrSpinner()}
-      </Container>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Container>
+          {this.renderHeader()}
+          {this.renderPropertyLocation()}
+          {this.renderPropertyInfo()}
+          {this.renderPropertyPictures()}
+          {this.renderMessages()}
+          {this.renderButtonOrSpinner()}
+        </Container>
+      </ScrollView>
     );
   }
 }

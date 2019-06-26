@@ -56,6 +56,7 @@ class PropertyController {
 
       return { property, message: "Property created successfully" };
     } catch (error) {
+      console.log(error);
       return response.status(500).send({ message: "Something went wrong!" });
     }
   }
