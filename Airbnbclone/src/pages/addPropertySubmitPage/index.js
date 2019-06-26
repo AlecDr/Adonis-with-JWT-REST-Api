@@ -2,6 +2,11 @@ import React from "react";
 import api from "../../services/api";
 import Emoji from "react-native-emoji";
 import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
+import MapView, { Marker } from "react-native-maps";
+
+import { AsyncStorage } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import PictureList from "../../components/PictureList";
 import {
   Button,
   ButtonText,
@@ -10,10 +15,14 @@ import {
   TitleText,
   MessagesContainer,
   ErrorText,
-  SuccessText
+  SuccessText,
+  ImagesContainer,
+  SubTitleText,
+  PropertyDetailsContainer,
+  LabelText,
+  DetailText,
+  PropertyLocationContainer
 } from "./styles";
-import { AsyncStorage } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default class AddPropertySubmitPage extends React.Component {
   state = {
@@ -21,7 +30,9 @@ export default class AddPropertySubmitPage extends React.Component {
     success: "",
     error: "",
     loading: false,
-    userToken: null
+    userToken: null,
+    submitted: false,
+    flex: 0
   };
 
   componentWillMount() {
@@ -36,11 +47,11 @@ export default class AddPropertySubmitPage extends React.Component {
   renderButtonOrSpinner = () => {
     return this.state.loading ? (
       <LoadingIcon />
-    ) : (
+    ) : !this.state.submitted ? (
       <Button onPress={this.handleAddProperty}>
         <ButtonText>Add Property</ButtonText>
       </Button>
-    );
+    ) : null;
   };
 
   renderMessages = () => {
@@ -90,18 +101,71 @@ export default class AddPropertySubmitPage extends React.Component {
 
       this.setState({
         loading: false,
-        success: "Property created successfully! redirecting..."
+        success:
+          "Property created successfully! Going back to the main page...",
+        submitted: true
       });
+
+      setTimeout(() => {
+        this.props.navigation.popToTop();
+      }, 1000);
     } catch (error) {
       this.setState({ loading: false, error: JSON.stringify(error) });
     }
   };
 
-  renderPropertyInfo = () => {};
+  renderPropertyInfo = () => {
+    return (
+      <PropertyDetailsContainer>
+        <SubTitleText>Details</SubTitleText>
+        <LabelText>Title</LabelText>
+        <DetailText>{this.state.property.title}</DetailText>
+        <LabelText>Address</LabelText>
+        <DetailText>{this.state.property.address}</DetailText>
+        <LabelText>Price</LabelText>
+        <DetailText>$ {this.state.property.price}</DetailText>
+      </PropertyDetailsContainer>
+    );
+  };
 
-  renderPropertyLocation = () => {};
+  renderPropertyLocation = () => {
+    return (
+      <PropertyLocationContainer>
+        <SubTitleText>Property Location</SubTitleText>
+        <MapView
+          region={{
+            latitude: this.state.property.coordinate.latitude,
+            longitude: this.state.property.coordinate.longitude,
+            latitudeDelta: 0.0222,
+            longitudeDelta: 0.0222
+          }}
+          style={{ flex: this.state.flex }}
+          onMapReady={() => setTimeout(() => this.setState({ flex: 1 }), 500)}
+        >
+          {this.state.flex ? (
+            <Marker
+              coordinate={{
+                latitude: this.state.property.coordinate.latitude,
+                longitude: this.state.property.coordinate.longitude
+              }}
+              onDragEnd={e =>
+                this.setState({ markerPosition: e.nativeEvent.coordinate })
+              }
+            />
+          ) : null}
+        </MapView>
+      </PropertyLocationContainer>
+    );
+  };
 
-  renderPropertyPictures = () => {};
+  renderPropertyPictures = () => {
+    return (
+      <ImagesContainer>
+        <SubTitleText>The pictures</SubTitleText>
+        <PictureList pictures={this.state.property.pictures} />
+      </ImagesContainer>
+    );
+  };
 
   renderHeader = () => {
     return (

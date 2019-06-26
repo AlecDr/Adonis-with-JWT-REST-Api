@@ -5,7 +5,6 @@ export const Container = styled.View`
   flex-direction: column;
   flex: 1;
   background-color: #fff;
-  padding: 12px;
 `;
 
 export const HeaderContainer = styled.View`
@@ -51,4 +50,47 @@ export const ErrorText = styled.Text`
 export const SuccessText = styled.Text`
   font-size: 16px;
   color: green;
+`;
+
+export const ImagesContainer = styled.View`
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+export const SubTitleText = styled.Text`
+  font-size: 20px;
+  color: #111;
+  text-align: left;
+  margin: 10px 20px;
+  font-weight: bold;
+`;
+
+export const LabelText = styled.Text`
+  font-size: 16px;
+  color: #222;
+  text-align: left;
+  margin: 2px 20px;
+  font-weight: bold;
+`;
+
+export const DetailText = styled.Text`
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+  margin: 2px 20px;
+`;
+
+export const PropertyDetailsContainer = styled.View`
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+export const PropertyLocationContainer = styled.View`
+  width: 100%;
+  height: 200px;
+  flex-direction: column;
 `;
