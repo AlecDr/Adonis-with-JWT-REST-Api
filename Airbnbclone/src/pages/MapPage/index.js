@@ -9,7 +9,6 @@ import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
 // custom components
 import {
   Container,
-  FindMeButton,
   BottomMapContainer,
   LoadingLocationContainer
 } from "./styles";
@@ -49,46 +48,48 @@ export default class MapPage extends React.Component {
   };
 
   fetchProperties = async () => {
-    const longitude = this.state.region.longitude;
-    const latitude = this.state.region.latitude;
+    if (!this.state.loadingProperties) {
+      const longitude = this.state.region.longitude;
+      const latitude = this.state.region.latitude;
 
-    if (!this.state.userToken) {
-      this.fetchUserToken();
-    }
+      if (!this.state.userToken) {
+        this.fetchUserToken();
+      }
 
-    this.setState({
-      loadingProperties: true,
-      properties: []
-    });
-
-    try {
-      const response = await axios.get("/properties", {
-        params: {
-          token: this.state.userToken,
-          latitude,
-          longitude,
-          distance: 10
-        }
-      });
-
-      const properties = response.data;
       this.setState({
-        loadingProperties: false,
-        properties: properties
+        loadingProperties: true,
+        properties: []
       });
-    } catch (error) {
-      Toast.show(JSON.stringify(error.message), {
-        duration: 10000,
-        position: Toast.positions.TOP + 45,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        backgroundColor: "#880e4f",
-        delay: 100
-      });
-      this.setState({
-        loadingProperties: false
-      });
+
+      try {
+        const response = await axios.get("/properties", {
+          params: {
+            token: this.state.userToken,
+            latitude,
+            longitude,
+            distance: 10
+          }
+        });
+
+        const properties = response.data;
+        this.setState({
+          loadingProperties: false,
+          properties: properties
+        });
+      } catch (error) {
+        Toast.show(JSON.stringify(error.message), {
+          duration: 10000,
+          position: Toast.positions.TOP + 45,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: "#880e4f",
+          delay: 100
+        });
+        this.setState({
+          loadingProperties: false
+        });
+      }
     }
   };
 
@@ -171,7 +172,7 @@ export default class MapPage extends React.Component {
       return (
         <Container>
           <MapView
-            region={this.state.region}
+            initialRegion={this.state.region}
             style={{ flex: this.state.flex }}
             onRegionChangeComplete={this.onRegionChange}
             showsUserLocation={this.state.userLocationPermission}
