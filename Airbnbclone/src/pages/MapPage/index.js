@@ -49,11 +49,10 @@ export default class MapPage extends React.Component {
 
   fetchProperties = async () => {
     if (!this.state.loadingProperties) {
-      const longitude = this.state.region.longitude;
-      const latitude = this.state.region.latitude;
+      const { longitude, latitude } = this.state.region;
 
       if (!this.state.userToken) {
-        this.fetchUserToken();
+        await this.fetchUserToken();
       }
 
       this.setState({

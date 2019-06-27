@@ -2,7 +2,9 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ImagePicker from "react-native-image-crop-picker";
 import PictureList from "../../components/PictureList";
+import ImageRemoverModal from "../../components/ImageRemoverModal";
 import { FloatingAction } from "react-native-floating-action";
+import Modal from "react-native-modal";
 
 // custom components
 import {
@@ -16,7 +18,13 @@ import {
 export default class AddPropertyPicturesPage extends React.Component {
   state = {
     markerCoordinate: this.props.navigation.getParam("coordinate", "invalid"),
-    pictures: []
+    modalVisible: false,
+    pictures: [],
+    selectedPicture: null
+  };
+
+  handleImagePress = uri => {
+    this.setState({ selectedPicture: uri, modalVisible: true });
   };
 
   handlePictureButtonPress = async () => {
@@ -104,11 +112,39 @@ export default class AddPropertyPicturesPage extends React.Component {
     );
   };
 
+  closeModalHandler = () => {
+    this.setState({ modalVisible: false, selectedPicture: null });
+  };
+
+  removePictureHandler = () => {
+    let pictures = [...this.state.pictures];
+
+    pictures = pictures.filter(
+      picture => picture !== this.state.selectedPicture
+    );
+
+    this.setState({ pictures, selectedPicture: null, modalVisible: false });
+  };
+
   render() {
     return (
       <Container>
+        <Modal
+          onBackButtonPress={this.closeModalHandler}
+          onBackdropPress={this.closeModalHandler}
+          useNativeDriver
+          isVisible={this.state.modalVisible}
+        >
+          <ImageRemoverModal
+            onCancelHandler={this.closeModalHandler}
+            onConfirmHandler={this.removePictureHandler}
+          />
+        </Modal>
         <Title>Lets take some pictures!</Title>
-        <PictureList pictures={this.state.pictures} />
+        <PictureList
+          onPressHandler={this.handleImagePress}
+          pictures={this.state.pictures}
+        />
         <ButtonsContainer>
           <Button onPress={this.handlePictureButtonPress}>
             <ButtonText>Take picture</ButtonText>

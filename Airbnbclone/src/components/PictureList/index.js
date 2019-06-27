@@ -14,7 +14,11 @@ const PictureList = props => {
       showsHorizontalScrollIndicator={false}
     >
       {props.pictures.map((picture, index) => (
-        <PropertyPicture key={index} path={picture} />
+        <PropertyPicture
+          onPicturePressHandler={props.onPressHandler}
+          key={index}
+          path={picture}
+        />
       ))}
     </PhotosContainer>
   ) : (

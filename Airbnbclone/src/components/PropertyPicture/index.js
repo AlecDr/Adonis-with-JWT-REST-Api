@@ -1,6 +1,10 @@
 import React from "react";
-import { Image } from "./styles";
+import { Image, ImageContainer } from "./styles";
 
-const PropertyPicture = props => <Image source={{ uri: props.path }} />;
+const PropertyPicture = props => (
+  <ImageContainer onPress={() => props.onPicturePressHandler(props.path)}>
+    <Image source={{ uri: props.path }} />
+  </ImageContainer>
+);
 
 export default PropertyPicture;
