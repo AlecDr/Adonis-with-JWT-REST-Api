@@ -82,22 +82,25 @@ export default class AddPropertySubmitPage extends React.Component {
       });
 
       const id = response.data.property.id;
-      const data = new FormData();
-      data.append("token", this.state.userToken);
 
-      this.state.property.pictures.map((picture, index) => {
-        let random = Math.floor(Math.random() * 1000000) + 1;
-        data.append(`image`, {
-          name: `${random}${id}${index}.jpg`,
-          type: "image/jpeg",
-          uri: picture
+      if (this.state.property.pictures.length) {
+        const data = new FormData();
+        data.append("token", this.state.userToken);
+
+        this.state.property.pictures.map((picture, index) => {
+          let random = Math.floor(Math.random() * 1000000) + 1;
+          data.append(`image`, {
+            name: `${random}${id}${index}.jpg`,
+            type: "image/jpeg",
+            uri: picture
+          });
         });
-      });
 
-      const imagesResponse = await api.post(
-        `/properties/${id}/images/store`,
-        data
-      );
+        const imagesResponse = await api.post(
+          `/properties/${id}/images/store`,
+          data
+        );
+      }
 
       this.setState({
         loading: false,

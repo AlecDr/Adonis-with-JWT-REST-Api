@@ -27,12 +27,20 @@ export default class MapPage extends React.Component {
     userLocationPermission: false,
     loadingProperties: false,
     userToken: null,
+    focused: true,
     properties: []
   };
 
-  componentDidMount() {
-    this.checkUserLocationPermission();
-    this.fetchUserToken();
+  registerNavigatorWatchers = () => {
+    this.props.navigation.addListener("didFocus", () => {
+      this.fetchProperties();
+    });
+  };
+
+  async componentDidMount() {
+    await this.checkUserLocationPermission();
+    await this.fetchUserToken();
+    await this.registerNavigatorWatchers();
   }
 
   fetchUserToken = async () => {
