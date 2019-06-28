@@ -56,8 +56,7 @@ export default class MapPage extends React.Component {
       }
 
       this.setState({
-        loadingProperties: true,
-        properties: []
+        loadingProperties: true
       });
 
       try {
@@ -71,6 +70,7 @@ export default class MapPage extends React.Component {
         });
 
         const properties = response.data;
+
         this.setState({
           loadingProperties: false,
           properties: properties
@@ -112,6 +112,8 @@ export default class MapPage extends React.Component {
   renderProperties = () => {
     return this.state.properties.map((property, index) => (
       <Marker
+        title={property.title}
+        description={`${property.address} - $ ${property.price}`}
         key={index}
         coordinate={{
           latitude: property.latitude,
@@ -133,8 +135,8 @@ export default class MapPage extends React.Component {
     }
   };
 
-  onRegionChange = region => {
-    this.setState({
+  onRegionChange = async region => {
+    await this.setState({
       region: {
         latitudeDelta: region.latitudeDelta,
         longitudeDelta: region.longitudeDelta,
