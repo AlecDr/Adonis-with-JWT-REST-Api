@@ -5,7 +5,15 @@ export const Image = styled.Image`
   border-radius: 20px;
 `;
 
-export const ImageContainer = styled.TouchableOpacity`
+export const TouchableImageContainer = styled.TouchableOpacity`
+  margin: 5px 15px;
+  height: 150px;
+  width: 150px;
+  border-radius: 10px;
+  align-self: center;
+`;
+
+export const NormalImageContainer = styled.View`
   margin: 5px 15px;
   height: 150px;
   width: 150px;
