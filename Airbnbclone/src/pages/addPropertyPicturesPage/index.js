@@ -136,6 +136,7 @@ export default class AddPropertyPicturesPage extends React.Component {
           isVisible={this.state.modalVisible}
         >
           <ImageRemoverModal
+            path={this.state.selectedPicture}
             onCancelHandler={this.closeModalHandler}
             onConfirmHandler={this.removePictureHandler}
           />
