@@ -1,8 +1,6 @@
 import styled from "styled-components/native";
 
-export const LogoutContainer = styled.View`
-  margin: 1px 0px;
-`;
+export const LogoutContainer = styled.View``;
 
 export const LogoutButton = styled.View`
   flex-direction: row;
