@@ -1,18 +1,20 @@
 import React from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import { FloatingAction } from "react-native-floating-action";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import axios from "../../services/api";
+import PropertyCallout from "../../components/PropertyCallout";
 
 import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
+
 // custom components
 import {
   Container,
   BottomMapContainer,
   LoadingLocationContainer
 } from "./styles";
-import { PermissionsAndroid, AsyncStorage } from "react-native";
+import { PermissionsAndroid, AsyncStorage, Text } from "react-native";
 
 export default class MapPage extends React.Component {
   state = {
@@ -27,6 +29,7 @@ export default class MapPage extends React.Component {
     loadingProperties: false,
     userToken: null,
     focused: true,
+    mapIsReady: false,
     properties: []
   };
 
@@ -110,17 +113,21 @@ export default class MapPage extends React.Component {
   };
 
   renderProperties = () => {
-    return this.state.properties.map((property, index) => (
-      <Marker
-        title={property.title}
-        description={`${property.address} - $ ${property.price}`}
-        key={index}
-        coordinate={{
-          latitude: property.latitude,
-          longitude: property.longitude
-        }}
-      />
-    ));
+    if (this.state.mapIsReady) {
+      return this.state.properties.map((property, index) => (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: property.latitude,
+            longitude: property.longitude
+          }}
+        >
+          <PropertyCallout detailsPressHandler={null} title={property.title} />
+        </Marker>
+      ));
+    } else {
+      return null;
+    }
   };
 
   navigateToAddPropertyPage = () => {
@@ -179,7 +186,10 @@ export default class MapPage extends React.Component {
             showsUserLocation={this.state.userLocationPermission}
             showsMyLocationButton
             onMapReady={() =>
-              setTimeout(() => this.setState({ flex: 1 }), 1000)
+              setTimeout(
+                () => this.setState({ flex: 1, mapIsReady: true }),
+                1000
+              )
             }
           >
             {this.renderProperties()}

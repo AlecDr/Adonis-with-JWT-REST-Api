@@ -1,6 +1,6 @@
 import SignUp from "./signUp";
 import SignIn from "./signIn";
-import MapPage from "./MapPage";
+import MapPage from "./mapPage";
 import UserPage from "./userPage";
 import LoadingPage from "./loadingPage";
 import AddPropertySelectLocationPage from "./addPropertySelectLocationPage";
