@@ -1,0 +1,29 @@
+body {
+  background-color: #1c1c22;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  padding: 14px;
+  display: inline-block;
+  align-self: center;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ddd;
+}
+
+.link {
+  color: #880e4f;
+  font-weight: bold;
+}
