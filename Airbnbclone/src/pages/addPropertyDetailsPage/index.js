@@ -41,7 +41,8 @@ export default class AddPropertyDetailsPage extends React.Component {
     if (address.trim() !== "" && title.trim() !== "" && price > 0) {
       this.props.navigation.navigate("AddPropertySubmitPage", {
         property: {
-          coordinate: this.state.markerCoordinate,
+          latitude: this.state.markerCoordinate.latitude,
+          longitude: this.state.markerCoordinate.longitude,
           title: this.state.title,
           address: this.state.address,
           price: this.state.price,

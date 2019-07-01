@@ -81,6 +81,7 @@ class PropertyController {
        * If the property exists, send it back,
        * if not, send a 404 with a message
        */
+      console.log("property");
       return property
         ? property
         : response.status(404).send({ message: "Property not found!" });

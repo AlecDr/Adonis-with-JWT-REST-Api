@@ -29,5 +29,5 @@ export const DetailsButton = styled.TouchableOpacity`
 export const DetailsButtonText = styled.Text`
   color: #eee;
   font-size: 10px;
-  font-weight: lighter;
+  font-weight: bold;
 `;

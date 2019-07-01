@@ -24,6 +24,8 @@ import {
   PropertyLocationContainer
 } from "./styles";
 
+import PropertyDetails from "../../components/PropertyDetails";
+
 export default class AddPropertySubmitPage extends React.Component {
   state = {
     property: this.props.navigation.getParam("property", null),
@@ -67,8 +69,13 @@ export default class AddPropertySubmitPage extends React.Component {
 
   handleAddProperty = async () => {
     try {
-      const { title, price, address } = this.state.property;
-      const { latitude, longitude } = this.state.property.coordinate;
+      const {
+        title,
+        price,
+        address,
+        latitude,
+        longitude
+      } = this.state.property;
 
       this.setState({ loading: true });
 
@@ -137,8 +144,8 @@ export default class AddPropertySubmitPage extends React.Component {
         <SubTitleText>Property Location</SubTitleText>
         <MapView
           region={{
-            latitude: this.state.property.coordinate.latitude,
-            longitude: this.state.property.coordinate.longitude,
+            latitude: this.state.property.latitude,
+            longitude: this.state.property.longitude,
             latitudeDelta: 0.0222,
             longitudeDelta: 0.0222
           }}
@@ -148,12 +155,9 @@ export default class AddPropertySubmitPage extends React.Component {
           {this.state.flex ? (
             <Marker
               coordinate={{
-                latitude: this.state.property.coordinate.latitude,
-                longitude: this.state.property.coordinate.longitude
+                latitude: this.state.property.latitude,
+                longitude: this.state.property.longitude
               }}
-              onDragEnd={e =>
-                this.setState({ markerPosition: e.nativeEvent.coordinate })
-              }
             />
           ) : null}
         </MapView>
@@ -182,10 +186,15 @@ export default class AddPropertySubmitPage extends React.Component {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <Container>
-          {this.renderHeader()}
+          {/* {this.renderHeader()}
           {this.renderPropertyLocation()}
           {this.renderPropertyInfo()}
-          {this.renderPropertyPictures()}
+          {this.renderPropertyPictures()} */}
+          <PropertyDetails
+            titleText="Everything Checks?"
+            useEmoji={true}
+            property={this.state.property}
+          />
           {this.renderMessages()}
           {this.renderButtonOrSpinner()}
         </Container>

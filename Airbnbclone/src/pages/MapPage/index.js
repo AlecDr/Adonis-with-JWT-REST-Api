@@ -122,12 +122,21 @@ export default class MapPage extends React.Component {
             longitude: property.longitude
           }}
         >
-          <PropertyCallout detailsPressHandler={null} title={property.title} />
+          <PropertyCallout
+            detailsPressHandler={() => {
+              this.detailsPressHandler(property.id);
+            }}
+            title={property.title}
+          />
         </Marker>
       ));
     } else {
       return null;
     }
+  };
+
+  detailsPressHandler = propertyId => {
+    this.props.navigation.navigate("PropertyDetailsPage", { propertyId });
   };
 
   navigateToAddPropertyPage = () => {

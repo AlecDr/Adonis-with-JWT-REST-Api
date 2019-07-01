@@ -24,6 +24,7 @@ Route.post("/auth/authenticate", "AuthController.create");
 Route.resource("/properties", "PropertyController")
   .apiOnly()
   .middleware("auth");
+
 Route.post("/properties/:id/images/store", "ImageController.store").middleware(
   "auth"
 );

@@ -10,10 +10,10 @@ import {
 } from "./styles";
 
 const PropertyCallout = props => (
-  <Callout>
+  <Callout onPress={props.detailsPressHandler}>
     <Container>
       <TitleText>{props.title}</TitleText>
-      <DetailsButton onPress={props.detailsPressHandler}>
+      <DetailsButton>
         <DetailsButtonText>Details</DetailsButtonText>
       </DetailsButton>
     </Container>

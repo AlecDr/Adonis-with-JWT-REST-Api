@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation";
 import { TouchableOpacity } from "react-native";
 import {
   MapPage,
+  PropertyDetailsPage,
   AddPropertySelectLocationPage,
   AddPropertyPicturesPage,
   AddPropertyDetailsPage,
@@ -33,6 +34,18 @@ const MapStack = createStackNavigator({
           </TouchableOpacity>
         ),
 
+        headerTintColor: "#ffeaeb"
+      };
+    }
+  },
+  PropertyDetailsPage: {
+    screen: PropertyDetailsPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: "Details",
+        headerStyle: {
+          backgroundColor: "#d65154"
+        },
         headerTintColor: "#ffeaeb"
       };
     }
