@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../../Helpers/Auth";
 import logo from "../../assets/images/logo.png";
 import styles from "./styles.module.css";
 
