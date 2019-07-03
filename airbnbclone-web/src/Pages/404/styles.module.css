@@ -1,5 +1,5 @@
 body {
-  background-color: #1c1c22;
+  background-color: #f0f0f0;
 }
 
 .container {
@@ -20,10 +20,21 @@ p {
   text-align: center;
   font-size: 3rem;
   font-weight: bold;
-  color: #ddd;
+  color: rgb(65, 65, 65);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+span {
+  color: rgb(65, 65, 65);
 }
 
 .link {
   color: #880e4f;
   font-weight: bold;
+  margin: 0px 12px;
 }

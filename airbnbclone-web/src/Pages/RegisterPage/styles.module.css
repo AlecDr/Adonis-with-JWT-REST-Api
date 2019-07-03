@@ -1,0 +1,94 @@
+.registerCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  border: 1px #999 solid;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 35%;
+  align-self: center;
+  margin-bottom: 40px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+  justify-content: center;
+}
+
+.label {
+  font-size: 14px;
+  margin-bottom: 3px;
+  font-weight: bold;
+  color: #222;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #999;
+  background-color: #fff;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.registerButton {
+  margin-top: 40px;
+  background-color: #128108;
+  border: 2px solid #0c5705;
+}
+
+.loginButton {
+  background-color: #880e4f;
+  border: 2px solid #550731;
+}
+
+.divider {
+  width: 99%;
+  align-self: center;
+  border: none;
+  margin: 6px 0px;
+  border-top: 1px solid #777;
+}
+
+@media (min-width: 1440px) {
+  .registerCard {
+    width: 30vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .registerCard {
+    width: 35vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .registerCard {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 425px) {
+  .registerCard {
+    width: 90vw;
+  }
+}
