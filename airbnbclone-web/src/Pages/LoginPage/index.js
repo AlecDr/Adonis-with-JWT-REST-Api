@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../../Helpers/Auth";
 import logo from "../../assets/images/logo.png";
@@ -8,15 +8,21 @@ export default props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  let login = async event => {
+  let handleLogin = async event => {
     event.preventDefault();
+    setLoading(true);
 
     if (checkInputs()) {
+      try {
+        const result = await login({ userEmail: email, password });
+        props.history.push("/maps");
+      } catch (error) {
+        showErrorMessage("Something went wrong, try using a different email!");
+      }
     } else {
-      setMessage("You should provide an email and password!");
-
-      setTimeout(() => setMessage(""), 3000);
+      showErrorMessage("You should provide an email and password!");
     }
   };
 
@@ -24,11 +30,40 @@ export default props => {
     return email.trim().length > 0 && password.trim().length > 0;
   };
 
+  let renderButtonsOrSpinner = () => {
+    if (!loading) {
+      return (
+        <Fragment>
+          <button className={[styles.button, styles.loginButton].join(" ")}>
+            Login
+          </button>
+          <hr className={styles.divider} />
+          <Link to="/register">
+            <button
+              type="button"
+              className={[styles.button, styles.registerButton].join(" ")}
+            >
+              Register
+            </button>
+          </Link>
+        </Fragment>
+      );
+    } else {
+      return <p>Loading...</p>;
+    }
+  };
+
+  let showErrorMessage = message => {
+    setMessage(message);
+    setLoading(false);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   return (
     <div className={styles.registerCard}>
       <img className={styles.logo} src={logo} alt="" />
       <h2 className={styles.title}>Login</h2>
-      <form onSubmit={login}>
+      <form onSubmit={handleLogin}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Email</label>
           <input
@@ -48,19 +83,8 @@ export default props => {
           />
         </div>
         <div className={styles.alert}>{message}</div>
-        <button className={[styles.button, styles.loginButton].join(" ")}>
-          Login
-        </button>
+        {renderButtonsOrSpinner()}
       </form>
-      <hr className={styles.divider} />
-      <Link to="/register">
-        <button
-          type="button"
-          className={[styles.button, styles.registerButton].join(" ")}
-        >
-          Register
-        </button>
-      </Link>
     </div>
   );
 };

@@ -6,8 +6,24 @@ const isAuthenticated = () => {
   return token ? token : false;
 };
 
-const login = token => {
-  localStorage.setItem("token", token);
+const login = async ({ userEmail, password }) => {
+  try {
+    const response = await api.post("/auth/authenticate", {
+      email: userEmail,
+      password
+    });
+    const token = response.data.token.token;
+    const { email, name } = response.data.user;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("email", email);
+    localStorage.setItem("name", name);
+
+    return;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const logout = () => {
@@ -22,7 +38,7 @@ const getToken = () => {
 
 const register = async ({ email, password, username }) => {
   try {
-    const result = await api.post("/users/create", {
+    await api.post("/users/create", {
       email,
       password,
       username
