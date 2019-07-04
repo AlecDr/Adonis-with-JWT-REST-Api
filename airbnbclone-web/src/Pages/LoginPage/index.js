@@ -54,7 +54,10 @@ export default props => {
       </form>
       <hr className={styles.divider} />
       <Link to="/register">
-        <button className={[styles.button, styles.registerButton].join(" ")}>
+        <button
+          type="button"
+          className={[styles.button, styles.registerButton].join(" ")}
+        >
           Register
         </button>
       </Link>
