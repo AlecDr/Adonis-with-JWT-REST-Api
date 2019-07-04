@@ -19,7 +19,7 @@ class AuthController {
         .send({ token, user: { email: user.email, name: user.username } });
     } catch (error) {
       console.log(error);
-      return response.status(200).send({ message: "Email or password wrong!" });
+      return response.status(400).send({ message: "Email or password wrong!" });
     }
   }
 }

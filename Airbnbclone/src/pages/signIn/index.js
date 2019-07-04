@@ -76,7 +76,7 @@ export default class SignIn extends React.Component {
         this.setState({
           loading: false,
           success: "",
-          error: "Something went wrong!" + error
+          error: "Something went wrong!"
         });
       }
     } else {

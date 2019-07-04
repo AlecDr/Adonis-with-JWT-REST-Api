@@ -14,7 +14,7 @@ class UserController {
         .send({ message: "User created with email: " + email });
     } catch (error) {
       console.log(error);
-      return response.status(200).send({
+      return response.status(400).send({
         message: "A user with this these credentials already exists!"
       });
     }

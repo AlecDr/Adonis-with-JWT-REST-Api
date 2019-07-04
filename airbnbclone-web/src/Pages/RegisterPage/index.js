@@ -1,22 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { register } from "../../Helpers/Auth";
 import logo from "../../assets/images/logo.png";
 import styles from "./styles.module.css";
 
 export default props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  let register = async event => {
+  let handleRegister = async event => {
     event.preventDefault();
-
+    setLoading(true);
     if (checkInputs()) {
+      try {
+        const result = await register({ email, password, username });
+        props.history.push("/login");
+      } catch (error) {
+        showErrorMessage("Something went wrong, try using a different email!");
+      }
     } else {
-      setMessage("You should provide an email, password and name !");
+      showErrorMessage("You should provide an email, password and name !");
+    }
+  };
 
-      setTimeout(() => setMessage(""), 3000);
+  let showErrorMessage = message => {
+    setMessage(message);
+    setLoading(false);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  let renderButtonsOrSpinner = () => {
+    if (!loading) {
+      return (
+        <Fragment>
+          <button className={[styles.button, styles.registerButton].join(" ")}>
+            Register
+          </button>
+          <hr className={styles.divider} />
+          <Link to="/login">
+            <button
+              type="button"
+              className={[styles.button, styles.loginButton].join(" ")}
+            >
+              Login
+            </button>
+          </Link>
+        </Fragment>
+      );
+    } else {
+      return <p>Loading...</p>;
     }
   };
 
@@ -24,7 +59,7 @@ export default props => {
     return (
       email.trim().length > 0 &&
       password.trim().length > 0 &&
-      name.trim().length > 0
+      username.trim().length > 0
     );
   };
 
@@ -32,12 +67,12 @@ export default props => {
     <div className={styles.registerCard}>
       <img className={styles.logo} src={logo} />
       <h2 className={styles.title}>Register</h2>
-      <form onSubmit={register}>
+      <form onSubmit={handleRegister}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Name</label>
           <input
-            onChange={event => setName(event.target.value)}
-            value={name}
+            onChange={event => setUsername(event.target.value)}
+            value={username}
             type="text"
             className={styles.input}
           />
@@ -62,20 +97,8 @@ export default props => {
         </div>
         <div className={styles.alert}>{message}</div>
 
-        <button className={[styles.button, styles.registerButton].join(" ")}>
-          Register
-        </button>
+        {renderButtonsOrSpinner()}
       </form>
-
-      <hr className={styles.divider} />
-      <Link to="/login">
-        <button
-          type="button"
-          className={[styles.button, styles.loginButton].join(" ")}
-        >
-          Login
-        </button>
-      </Link>
     </div>
   );
 };

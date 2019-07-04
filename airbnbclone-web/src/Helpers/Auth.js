@@ -1,3 +1,5 @@
+import api from "../api";
+
 const isAuthenticated = () => {
   const token = localStorage.getItem("token");
 
@@ -18,4 +20,18 @@ const getToken = () => {
   return token;
 };
 
-export { isAuthenticated, getToken, login, logout };
+const register = async ({ email, password, username }) => {
+  try {
+    const result = await api.post("/users/create", {
+      email,
+      password,
+      username
+    });
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { isAuthenticated, getToken, login, logout, register };
