@@ -9,6 +9,7 @@
   border: 1px #999 solid;
   display: flex;
   flex-direction: column;
+  width: 35vw;
 }
 
 .logo {
@@ -72,7 +73,20 @@
   border-top: 1px solid #777;
 }
 
+.alert {
+  color: red;
+  font-weight: bold;
+  font-size: 1em;
+  min-height: 40px;
+}
+
 @media (min-width: 1440px) {
+  .alert {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1440px) {
   .registerCard {
     width: 30vw;
   }
