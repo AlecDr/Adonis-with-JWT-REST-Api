@@ -1,21 +1,26 @@
+.container {
+  width: 100%;
+  flex: 1;
+  height: calc(100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .registerCard {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background-color: #ddd;
   border-radius: 10px;
-  padding: 30px;
+  padding: 15px;
   border: 1px #999 solid;
   display: flex;
   flex-direction: column;
-  width: 35vw;
+  width: 30vw;
 }
 
 .logo {
-  width: 35%;
+  width: 30%;
   align-self: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .inputGroup {
@@ -52,14 +57,17 @@
 }
 
 .registerButton {
-  margin-top: 40px;
-  background-color: #128108;
-  border: 2px solid #0c5705;
+  margin-top: 20px;
+  background-color: #880e4f;
+  border: 2px solid #550731;
 }
 
 .loginButton {
-  background-color: #880e4f;
-  border: 2px solid #550731;
+  background-color: #128108;
+  border: 2px solid #0c5705;
+
+  background-color: #128108;
+  border: 2px solid #0c5705;
 }
 
 .divider {
@@ -73,8 +81,8 @@
 .alert {
   color: red;
   font-weight: bold;
-  font-size: 1em;
-  min-height: 52px;
+  font-size: 0.8em;
+  min-height: 35px;
 }
 
 @media (min-width: 1440px) {

@@ -16,7 +16,7 @@ export default props => {
     setLoading(true);
     if (checkInputs()) {
       try {
-        const result = await register({ email, password, username });
+        await register({ email, password, username });
         props.history.push("/login");
       } catch (error) {
         showErrorMessage("Something went wrong, try using a different email!");
@@ -64,41 +64,43 @@ export default props => {
   };
 
   return (
-    <div className={styles.registerCard}>
-      <img className={styles.logo} src={logo} />
-      <h2 className={styles.title}>Register</h2>
-      <form onSubmit={handleRegister}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Name</label>
-          <input
-            onChange={event => setUsername(event.target.value)}
-            value={username}
-            type="text"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Email</label>
-          <input
-            onChange={event => setEmail(event.target.value)}
-            value={email}
-            type="email"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Password</label>
-          <input
-            onChange={event => setPassword(event.target.value)}
-            value={password}
-            type="password"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.alert}>{message}</div>
+    <div className={styles.container}>
+      <div className={styles.registerCard}>
+        <img className={styles.logo} src={logo} alt="" />
+        <h2 className={styles.title}>Register</h2>
+        <form onSubmit={handleRegister}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Name</label>
+            <input
+              onChange={event => setUsername(event.target.value)}
+              value={username}
+              type="text"
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Email</label>
+            <input
+              onChange={event => setEmail(event.target.value)}
+              value={email}
+              type="email"
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Password</label>
+            <input
+              onChange={event => setPassword(event.target.value)}
+              value={password}
+              type="password"
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.alert}>{message}</div>
 
-        {renderButtonsOrSpinner()}
-      </form>
+          {renderButtonsOrSpinner()}
+        </form>
+      </div>
     </div>
   );
 };

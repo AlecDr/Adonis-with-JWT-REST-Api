@@ -3,7 +3,7 @@ import api from "../api";
 const isAuthenticated = () => {
   const token = localStorage.getItem("token");
 
-  return token ? token : false;
+  return token != null ? token : false;
 };
 
 const login = async ({ userEmail, password }) => {
@@ -28,6 +28,9 @@ const login = async ({ userEmail, password }) => {
 
 const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("token");
+  localStorage.removeItem("email");
+  localStorage.removeItem("name");
 };
 
 const getToken = () => {

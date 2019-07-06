@@ -1,14 +1,16 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../../Helpers/Auth";
 import logo from "../../assets/images/logo.png";
 import styles from "./styles.module.css";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { setAuthenticated } = useContext(AuthContext);
 
   let handleLogin = async event => {
     event.preventDefault();
@@ -17,6 +19,7 @@ export default props => {
     if (checkInputs()) {
       try {
         const result = await login({ userEmail: email, password });
+        setAuthenticated(true);
         props.history.push("/maps");
       } catch (error) {
         showErrorMessage("Something went wrong, try using a different email!");
@@ -60,31 +63,33 @@ export default props => {
   };
 
   return (
-    <div className={styles.registerCard}>
-      <img className={styles.logo} src={logo} alt="" />
-      <h2 className={styles.title}>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Email</label>
-          <input
-            onChange={event => setEmail(event.target.value)}
-            value={email}
-            type="email"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Password</label>
-          <input
-            onChange={event => setPassword(event.target.value)}
-            value={password}
-            type="password"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.alert}>{message}</div>
-        {renderButtonsOrSpinner()}
-      </form>
+    <div className={styles.container}>
+      <div className={styles.registerCard}>
+        <img className={styles.logo} src={logo} alt="" />
+        <h2 className={styles.title}>Login</h2>
+        <form onSubmit={handleLogin}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Email</label>
+            <input
+              onChange={event => setEmail(event.target.value)}
+              value={email}
+              type="email"
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Password</label>
+            <input
+              onChange={event => setPassword(event.target.value)}
+              value={password}
+              type="password"
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.alert}>{message}</div>
+          {renderButtonsOrSpinner()}
+        </form>
+      </div>
     </div>
   );
 };
