@@ -28,7 +28,6 @@ const login = async ({ userEmail, password }) => {
 
 const logout = () => {
   localStorage.removeItem("token");
-  localStorage.removeItem("token");
   localStorage.removeItem("email");
   localStorage.removeItem("name");
 };

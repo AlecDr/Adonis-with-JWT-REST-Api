@@ -12,7 +12,7 @@ const Page404 = () => {
       </div>
       <p>Page not found!</p>
       {isAuthenticated() ? (
-        <Link to="/maps" className={styles.link}>
+        <Link to="/map" className={styles.link}>
           Back to home
         </Link>
       ) : (

@@ -10,7 +10,7 @@ export default props => {
   useEffect(() => {
     if (isAuthenticated()) setAuthenticated(true);
     else setAuthenticated(false);
-  });
+  }, []);
 
   return (
     <div className={styles.navbar}>

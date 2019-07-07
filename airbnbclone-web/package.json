@@ -10,7 +10,8 @@
     "react-kawaii": "^0.14.4",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "reactjs-popup": "^1.4.1"
+    "reactjs-popup": "^1.4.1",
+    "rxjs": "^6.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
