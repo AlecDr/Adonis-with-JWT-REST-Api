@@ -8,19 +8,15 @@ export default props => {
   const [mode, setMode] = React.useState("map");
   const [userLocation, setUserLocation] = React.useState({
     lat: 37.7577,
-    long: -120.4376,
-    zoom: 8
+    lng: -120.4376
   });
 
-  let onViewportChange = viewport => {
-    let { lat, long, zoom } = viewport;
-
-    setUserLocation({
-      lat,
-      long,
-      zoom
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      setUserLocation({ lat: latitude, lng: longitude });
     });
-  };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -31,8 +27,12 @@ export default props => {
       >
         <GoogleMap
           mapContainerClassName="App-map"
-          center={{ lat: 52.52047739093263, lng: 13.36653284549709 }}
+          center={userLocation}
           zoom={12}
+          options={{
+            streetViewControl: false,
+            mapTypeControl: false
+          }}
           mapContainerStyle={{ flex: 1 }}
           version="weekly"
           on
