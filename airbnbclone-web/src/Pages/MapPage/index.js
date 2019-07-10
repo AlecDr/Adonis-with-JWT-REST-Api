@@ -10,9 +10,10 @@ import {
 import styles from "./styles.module.css";
 import logo from "../../assets/images/logo.png";
 import api from "../../api/index";
+import { FaPlus } from "react-icons/fa";
 
 export default props => {
-  // const [mode, setMode] = React.useState("map");
+  const [mode, setMode] = React.useState("home");
   const [mapCenter, setMapCenter] = React.useState({
     lat: 37.7577,
     lng: -120.4376
@@ -77,6 +78,8 @@ export default props => {
     }
   };
 
+  let renderAddMarker = () => {};
+
   let renderCallout = property => {
     if (visibleCallout) {
       if (JSON.stringify(visibleCallout) === JSON.stringify(property))
@@ -95,6 +98,7 @@ export default props => {
               <p className={styles.calloutTitle}>{property.title}</p>
               <p className={styles.calloutAddress}>{property.address}</p>
               <p className={styles.calloutPrice}>{property.price} $</p>
+              <button className={styles.calloutButton}>See details</button>
             </div>
           </InfoWindow>
         );
@@ -146,12 +150,15 @@ export default props => {
             version="weekly"
             on
           >
-            {renderMarkers()}
+            {mode === "home" ? renderMarkers() : renderAddMarker()}
           </GoogleMap>
         </LoadScript>
       ) : null}
 
       {renderSpinner()}
+      <div className={styles.fab}>
+        <FaPlus color="white" size="30" />
+      </div>
     </div>
   );
 };

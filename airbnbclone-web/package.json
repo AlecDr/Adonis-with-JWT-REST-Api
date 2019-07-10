@@ -8,6 +8,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-google-maps": "^9.4.5",
+    "react-icons": "^3.7.0",
     "react-kawaii": "^0.14.4",
     "react-map-gl": "^5.0.3",
     "react-router-dom": "^5.0.1",
