@@ -41,14 +41,14 @@ export default props => {
     }
   };
 
-  let fetchProperties = async () => {
+  let fetchProperties = async position => {
     if (!loading) {
       try {
         setLoading(true);
         if (!userToken) {
           await getUserToken();
         }
-        const { lat, lng } = mapCenter;
+        const { lat, lng } = position;
         const response = await api.get("/properties", {
           params: {
             token: userToken,
@@ -58,7 +58,14 @@ export default props => {
           }
         });
 
-        setProperties(response.data);
+        if (response.data.length) {
+          if (
+            JSON.stringify(
+              response.data.map(responseProperty => responseProperty.id).sort()
+            ) !== JSON.stringify(properties.map(property => property.id).sort())
+          )
+            setProperties(response.data);
+        }
 
         if (searchInterval != null) {
           clearInterval(searchInterval);
@@ -75,7 +82,9 @@ export default props => {
       if (JSON.stringify(visibleCallout) === JSON.stringify(property))
         return (
           <InfoWindow
-            onUnmount={() => setVisibleCallout(null)}
+            onUnmount={() => {
+              setVisibleCallout(null);
+            }}
             onCloseClick={() => setVisibleCallout(null)}
             position={{
               lat: property.latitude,
@@ -94,11 +103,10 @@ export default props => {
 
   let renderMarkers = () => {
     if (properties.length) {
-      console.log(properties);
-      return properties.map(property => (
+      return properties.map((property, index) => (
         <Marker
           onClick={() => setVisibleCallout({ ...property })}
-          key={property.id}
+          key={index}
           draggable={false}
           position={{
             lat: property.latitude,
@@ -124,11 +132,10 @@ export default props => {
             center={mapCenter}
             ref={map}
             onCenterChanged={e => {
-              setMapCenter({
+              fetchProperties({
                 lat: map.current.state.map.center.lat(),
                 lng: map.current.state.map.center.lng()
               });
-              fetchProperties();
             }}
             zoom={16}
             options={{
