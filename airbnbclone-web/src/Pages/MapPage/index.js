@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "../../Helpers/Auth";
-import { AuthContext } from "../../Context/AuthContext";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  InfoWindow,
+  Marker
+} from "@react-google-maps/api";
 import styles from "./styles.module.css";
 import logo from "../../assets/images/logo.png";
 import api from "../../api/index";
@@ -14,9 +18,11 @@ export default props => {
     lng: -120.4376
   });
   const [loading, setLoading] = React.useState(false);
-  const [userToken, setUserToken] = React.useState();
+  const [userToken, setUserToken] = React.useState(null);
   const [searchInterval, setSearchInterval] = React.useState(null);
+  const [tokenLoaded, setTokenLoaded] = React.useState(false);
   const [properties, setProperties] = React.useState([]);
+  const [visibleCallout, setVisibleCallout] = React.useState(null);
 
   let map = React.createRef();
 
@@ -25,22 +31,24 @@ export default props => {
       const { latitude, longitude } = position.coords;
       setMapCenter({ lat: latitude, lng: longitude });
     });
-
-    fetchProperties();
+    getUserToken();
   }, []);
 
-  let getUserToken = () => {
-    if (!userToken) setUserToken(isAuthenticated());
+  let getUserToken = async () => {
+    if (!userToken) {
+      setUserToken(isAuthenticated());
+      setTokenLoaded(true);
+    }
   };
 
   let fetchProperties = async () => {
     if (!loading) {
       try {
         setLoading(true);
-        if (!userToken) getUserToken();
-
+        if (!userToken) {
+          await getUserToken();
+        }
         const { lat, lng } = mapCenter;
-
         const response = await api.get("/properties", {
           params: {
             token: userToken,
@@ -51,6 +59,7 @@ export default props => {
         });
 
         setProperties(response.data);
+
         if (searchInterval != null) {
           clearInterval(searchInterval);
         }
@@ -61,40 +70,80 @@ export default props => {
     }
   };
 
-  let renderMarkers = () => {};
+  let renderCallout = property => {
+    if (visibleCallout) {
+      if (JSON.stringify(visibleCallout) === JSON.stringify(property))
+        return (
+          <InfoWindow
+            onUnmount={() => setVisibleCallout(null)}
+            onCloseClick={() => setVisibleCallout(null)}
+            position={{
+              lat: property.latitude,
+              lng: property.longitude
+            }}
+          >
+            <div className={styles.calloutContainer}>
+              <p className={styles.calloutTitle}>{property.title}</p>
+              <p className={styles.calloutAddress}>{property.address}</p>
+              <p className={styles.calloutPrice}>{property.price} $</p>
+            </div>
+          </InfoWindow>
+        );
+    }
+  };
+
+  let renderMarkers = () => {
+    if (properties.length) {
+      console.log(properties);
+      return properties.map(property => (
+        <Marker
+          onClick={() => setVisibleCallout({ ...property })}
+          key={property.id}
+          draggable={false}
+          position={{
+            lat: property.latitude,
+            lng: property.longitude
+          }}
+        >
+          {renderCallout(property)}
+        </Marker>
+      ));
+    }
+  };
 
   let renderSpinner = () =>
     loading ? <img src={logo} className={styles.loader} /> : null;
 
   return (
     <div className={styles.container}>
-      <LoadScript
-        style={{ flex: 1 }}
-        id="script-loader"
-        googleMapsApiKey="AIzaSyAcKaRUoIwEeLg_A5zi9ufUnSGfTnCm9qc"
-      >
-        <GoogleMap
-          onLoad={renderMarkers}
-          mapContainerClassName="App-map"
-          center={mapCenter}
-          ref={map}
-          onCenterChanged={e => {
-            setMapCenter({
-              lat: map.current.state.map.center.lat(),
-              lng: map.current.state.map.center.lng()
-            });
-            fetchProperties();
-          }}
-          zoom={16}
-          options={{
-            streetViewControl: false,
-            mapTypeControl: false
-          }}
-          mapContainerStyle={{ flex: 1 }}
-          version="weekly"
-          on
-        />
-      </LoadScript>
+      {tokenLoaded ? (
+        <LoadScript style={{ flex: 1 }} id="script-loader" googleMapsApiKey="">
+          <GoogleMap
+            onLoad={fetchProperties}
+            mapContainerClassName="App-map"
+            center={mapCenter}
+            ref={map}
+            onCenterChanged={e => {
+              setMapCenter({
+                lat: map.current.state.map.center.lat(),
+                lng: map.current.state.map.center.lng()
+              });
+              fetchProperties();
+            }}
+            zoom={16}
+            options={{
+              streetViewControl: false,
+              mapTypeControl: false
+            }}
+            mapContainerStyle={{ flex: 1 }}
+            version="weekly"
+            on
+          >
+            {renderMarkers()}
+          </GoogleMap>
+        </LoadScript>
+      ) : null}
+
       {renderSpinner()}
     </div>
   );
