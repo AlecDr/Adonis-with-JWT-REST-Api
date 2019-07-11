@@ -11,6 +11,7 @@ import styles from "./styles.module.css";
 import logo from "../../assets/images/logo.png";
 import api from "../../api/index";
 import { FaPlus } from "react-icons/fa";
+import PropertyModal from "../../components/PropertyModal";
 
 export default props => {
   const [mode, setMode] = React.useState("home");
@@ -24,6 +25,8 @@ export default props => {
   const [tokenLoaded, setTokenLoaded] = React.useState(false);
   const [properties, setProperties] = React.useState([]);
   const [visibleCallout, setVisibleCallout] = React.useState(null);
+  const [selectedProperty, setSelectedProperty] = React.useState(null);
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   let map = React.createRef();
 
@@ -40,6 +43,16 @@ export default props => {
       setUserToken(isAuthenticated());
       setTokenLoaded(true);
     }
+  };
+
+  let detailsButtonHandler = propertyId => {
+    setSelectedProperty(propertyId);
+    setModalOpen(true);
+  };
+
+  let handleModalClose = () => {
+    setSelectedProperty(null);
+    setModalOpen(false);
   };
 
   let fetchProperties = async position => {
@@ -98,7 +111,12 @@ export default props => {
               <p className={styles.calloutTitle}>{property.title}</p>
               <p className={styles.calloutAddress}>{property.address}</p>
               <p className={styles.calloutPrice}>{property.price} $</p>
-              <button className={styles.calloutButton}>See details</button>
+              <button
+                onClick={() => detailsButtonHandler(property.id)}
+                className={styles.calloutButton}
+              >
+                See details
+              </button>
             </div>
           </InfoWindow>
         );
@@ -124,7 +142,12 @@ export default props => {
   };
 
   let renderSpinner = () =>
-    loading ? <img src={logo} className={styles.loader} /> : null;
+    loading ? <img src={logo} className={styles.loader} alt="" /> : null;
+
+  let renderPropertyModal = () =>
+    selectedProperty ? (
+      <PropertyModal onClose={handleModalClose} open={modalOpen} />
+    ) : null;
 
   return (
     <div className={styles.container}>
@@ -159,6 +182,8 @@ export default props => {
       <div className={styles.fab}>
         <FaPlus color="white" size="30" />
       </div>
+
+      {renderPropertyModal()}
     </div>
   );
 };

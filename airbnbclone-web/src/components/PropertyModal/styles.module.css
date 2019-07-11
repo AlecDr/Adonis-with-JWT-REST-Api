@@ -1,0 +1,8 @@
+.modal {
+  padding: 1.3rem;
+  border-radius: 10px;
+}
+
+.closeIcon {
+  cursor: pointer;
+}
