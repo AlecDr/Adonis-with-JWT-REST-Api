@@ -3,6 +3,22 @@
   border-radius: 10px;
 }
 
+.spinnerContanainer {
+  width: 100%;
+  min-height: 50vh;
+  min-width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .closeIcon {
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .spinnerContanainer {
+    min-height: 70vh;
+    min-width: 70vw;
+  }
 }
