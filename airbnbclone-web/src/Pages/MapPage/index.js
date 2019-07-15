@@ -56,37 +56,42 @@ export default props => {
   };
 
   let fetchProperties = async position => {
-    if (!loading) {
-      try {
-        setLoading(true);
-        if (!userToken) {
-          await getUserToken();
-        }
-        const { lat, lng } = position;
-        const response = await api.get("/properties", {
-          params: {
-            token: userToken,
-            latitude: lat,
-            longitude: lng,
-            distance: 10
+    if (position) {
+      if (!loading) {
+        try {
+          setLoading(true);
+          if (!userToken) {
+            await getUserToken();
           }
-        });
+          const { lat, lng } = position;
+          const response = await api.get("/properties", {
+            params: {
+              token: userToken,
+              latitude: lat,
+              longitude: lng,
+              distance: 10
+            }
+          });
 
-        if (response.data.length) {
-          if (
-            JSON.stringify(
-              response.data.map(responseProperty => responseProperty.id).sort()
-            ) !== JSON.stringify(properties.map(property => property.id).sort())
-          )
-            setProperties(response.data);
-        }
+          if (response.data.length) {
+            if (
+              JSON.stringify(
+                response.data
+                  .map(responseProperty => responseProperty.id)
+                  .sort()
+              ) !==
+              JSON.stringify(properties.map(property => property.id).sort())
+            )
+              setProperties(response.data);
+          }
 
-        if (searchInterval != null) {
-          clearInterval(searchInterval);
+          if (searchInterval != null) {
+            clearInterval(searchInterval);
+          }
+          setSearchInterval(setInterval(() => setLoading(false), 1000));
+        } catch (error) {
+          setLoading(false);
         }
-        setSearchInterval(setInterval(() => setLoading(false), 1000));
-      } catch (error) {
-        setLoading(false);
       }
     }
   };
@@ -146,7 +151,12 @@ export default props => {
 
   let renderPropertyModal = () =>
     selectedProperty ? (
-      <PropertyModal onClose={handleModalClose} open={modalOpen} />
+      <PropertyModal
+        userToken={userToken}
+        selectedProperty={selectedProperty}
+        onClose={handleModalClose}
+        open={modalOpen}
+      />
     ) : null;
 
   return (
@@ -154,7 +164,12 @@ export default props => {
       {tokenLoaded ? (
         <LoadScript style={{ flex: 1 }} id="script-loader" googleMapsApiKey="">
           <GoogleMap
-            onLoad={fetchProperties}
+            onLoad={e => {
+              fetchProperties({
+                lat: map.current.state.map.center.lat(),
+                lng: map.current.state.map.center.lng()
+              });
+            }}
             mapContainerClassName="App-map"
             center={mapCenter}
             ref={map}

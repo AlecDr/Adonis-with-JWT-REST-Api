@@ -9,14 +9,17 @@
     "react-dom": "^16.8.6",
     "react-google-maps": "^9.4.5",
     "react-icons": "^3.7.0",
+    "react-image-gallery": "^0.8.18",
     "react-kawaii": "^0.14.4",
     "react-map-gl": "^5.0.3",
     "react-responsive-modal": "^4.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-slick": "^0.24.0",
     "react-spinners": "^0.5.8",
     "reactjs-popup": "^1.4.1",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
