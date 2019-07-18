@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "../../Helpers/Auth";
-import "mapbox-gl/dist/mapbox-gl.css";
 import {
   GoogleMap,
   LoadScript,
@@ -10,7 +9,7 @@ import {
 import styles from "./styles.module.css";
 import logo from "../../assets/images/logo.png";
 import api from "../../api/index";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaCheck, FaTimes, FaSearchLocation } from "react-icons/fa";
 import PropertyModal from "../../components/PropertyModal";
 
 export default props => {
@@ -27,8 +26,8 @@ export default props => {
   const [visibleCallout, setVisibleCallout] = React.useState(null);
   const [selectedProperty, setSelectedProperty] = React.useState(null);
   const [modalOpen, setModalOpen] = React.useState(false);
-
-  let map = React.createRef();
+  const [addMarkerPosition, setAddMarkerPosition] = React.useState(null);
+  const [map, setMap] = React.useState(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
@@ -83,6 +82,8 @@ export default props => {
               JSON.stringify(properties.map(property => property.id).sort())
             )
               setProperties(response.data);
+          } else {
+            setProperties([]);
           }
 
           if (searchInterval != null) {
@@ -96,7 +97,34 @@ export default props => {
     }
   };
 
-  let renderAddMarker = () => {};
+  let findMarker = () => {
+    setAddMarkerPosition({
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    });
+  };
+
+  let renderAddMarker = () => {
+    if (!addMarkerPosition) {
+      setAddMarkerPosition({
+        lat: map.getCenter().lat(),
+        lng: map.getCenter().lng()
+      });
+    }
+
+    return (
+      <Marker
+        onDragEnd={e =>
+          setAddMarkerPosition({
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng()
+          })
+        }
+        draggable
+        position={addMarkerPosition}
+      />
+    );
+  };
 
   let renderCallout = property => {
     if (visibleCallout) {
@@ -159,24 +187,46 @@ export default props => {
       />
     ) : null;
 
+  let renderFabs = () =>
+    mode === "home" ? (
+      <div className={styles.fabsContainer}>
+        <div onClick={() => setMode("add")} className={styles.addFab}>
+          <FaPlus color="white" size="30" />
+        </div>
+      </div>
+    ) : (
+      <div className={styles.fabsContainer}>
+        <div onClick={() => setMode("details")} className={styles.addFab}>
+          <FaCheck color="white" size="30" />
+        </div>
+        <div onClick={findMarker} className={styles.helpFab}>
+          <FaSearchLocation color="white" size="30" />
+        </div>
+        <div onClick={() => setMode("home")} className={styles.cancelFab}>
+          <FaTimes color="white" size="30" />
+        </div>
+      </div>
+    );
+
   return (
     <div className={styles.container}>
       {tokenLoaded ? (
         <LoadScript style={{ flex: 1 }} id="script-loader" googleMapsApiKey="">
           <GoogleMap
             onLoad={e => {
+              setMap(e);
               fetchProperties({
-                lat: map.current.state.map.center.lat(),
-                lng: map.current.state.map.center.lng()
+                lat: e.getCenter().lat(),
+                lng: e.getCenter().lng()
               });
             }}
             mapContainerClassName="App-map"
             center={mapCenter}
-            ref={map}
-            onCenterChanged={e => {
+            onc
+            onCenterChanged={() => {
               fetchProperties({
-                lat: map.current.state.map.center.lat(),
-                lng: map.current.state.map.center.lng()
+                lat: map.getCenter().lat(),
+                lng: map.getCenter().lng()
               });
             }}
             zoom={16}
@@ -194,9 +244,7 @@ export default props => {
       ) : null}
 
       {renderSpinner()}
-      <div className={styles.fab}>
-        <FaPlus color="white" size="30" />
-      </div>
+      {renderFabs()}
 
       {renderPropertyModal()}
     </div>

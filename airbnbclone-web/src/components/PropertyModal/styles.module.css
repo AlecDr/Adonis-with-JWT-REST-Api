@@ -1,5 +1,5 @@
 .modal {
-  padding: 1.3rem;
+  padding: 1.1rem;
   border-radius: 10px;
 }
 
@@ -35,6 +35,8 @@
 .propertyTitle {
   align-self: center;
   font-size: 30px;
+  padding: 4px;
+  margin: 2px 0px;
 }
 
 .sectionTitle {
@@ -44,8 +46,7 @@
   display: flex;
   justify-content: flex-start;
   align-self: flex-start;
-  border-bottom: 1px solid #444;
-  margin: 14px 0px;
+  margin: 4px 0px;
 }
 
 .propertyAddress {

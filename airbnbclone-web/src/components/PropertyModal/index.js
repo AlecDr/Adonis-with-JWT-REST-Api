@@ -51,12 +51,12 @@ export default props => {
   let renderImagesCarousel = () => {
     let settings = {
       dots: true,
-      infinite: true,
+      infinite: false,
       centerMode: true,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      initialSlide: 1,
+      initialSlide: 0,
       adaptiveHeight: true,
       variableWidth: true
     };

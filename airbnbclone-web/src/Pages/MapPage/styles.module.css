@@ -1,19 +1,54 @@
 .container {
   display: flex;
+
   width: 100%;
   height: calc(100% - 60px);
 }
 
-.fab {
-  position: absolute;
-  bottom: 40px;
-  left: 10px;
-  width: 80px;
-  height: 80px;
+.addFab {
+  width: 65px;
+  height: 65px;
   border-radius: 40px;
   background-color: green;
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin: 4px 0px;
+  cursor: pointer;
+}
+
+.cancelFab {
+  width: 65px;
+  height: 65px;
+  border-radius: 40px;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 0px;
+  cursor: pointer;
+}
+
+.helpFab {
+  width: 65px;
+  height: 65px;
+  border-radius: 40px;
+  background-color: lightseagreen;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 0px;
+  cursor: pointer;
+}
+
+.fabsContainer {
+  padding: 4px 0px;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
