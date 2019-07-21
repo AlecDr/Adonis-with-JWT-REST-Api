@@ -25,7 +25,10 @@ export default props => {
   const [properties, setProperties] = React.useState([]);
   const [visibleCallout, setVisibleCallout] = React.useState(null);
   const [selectedProperty, setSelectedProperty] = React.useState(null);
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [
+    propertyDetailsModalOpen,
+    setPropertyDetailsModalOpen
+  ] = React.useState(false);
   const [addMarkerPosition, setAddMarkerPosition] = React.useState(null);
   const [map, setMap] = React.useState(null);
 
@@ -46,12 +49,12 @@ export default props => {
 
   let detailsButtonHandler = propertyId => {
     setSelectedProperty(propertyId);
-    setModalOpen(true);
+    setPropertyDetailsModalOpen(true);
   };
 
   let handleModalClose = () => {
     setSelectedProperty(null);
-    setModalOpen(false);
+    setPropertyDetailsModalOpen(false);
   };
 
   let fetchProperties = async position => {
@@ -183,7 +186,7 @@ export default props => {
         userToken={userToken}
         selectedProperty={selectedProperty}
         onClose={handleModalClose}
-        open={modalOpen}
+        open={propertyDetailsModalOpen}
       />
     ) : null;
 
@@ -224,10 +227,12 @@ export default props => {
             center={mapCenter}
             onc
             onCenterChanged={() => {
-              fetchProperties({
-                lat: map.getCenter().lat(),
-                lng: map.getCenter().lng()
-              });
+              return mode === "home"
+                ? fetchProperties({
+                    lat: map.getCenter().lat(),
+                    lng: map.getCenter().lng()
+                  })
+                : null;
             }}
             zoom={16}
             options={{
