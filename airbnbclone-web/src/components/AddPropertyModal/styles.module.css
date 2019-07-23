@@ -1,0 +1,77 @@
+.modal {
+  padding: 1.1rem;
+  border-radius: 10px;
+}
+
+.spinnerContainer {
+  width: 100%;
+  min-height: 50vh;
+  min-width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentContainer {
+  min-width: 70vh;
+  max-height: 70vh;
+  min-height: 70vh;
+  display: flex;
+  padding: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  flex-direction: column;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+  justify-content: center;
+}
+
+.label {
+  font-size: 14px;
+  margin-bottom: 3px;
+  font-weight: bold;
+  color: #222;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #999;
+  background-color: #fff;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.registerButton {
+  background-color: #880e4f;
+  border: 2px solid #550731;
+}
+
+.closeIcon {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .spinnerContainer {
+    min-height: 70vh;
+    min-width: 70vw;
+  }
+
+  .contentContainer {
+    min-height: 70vh;
+  }
+}

@@ -11,6 +11,7 @@ import logo from "../../assets/images/logo.png";
 import api from "../../api/index";
 import { FaPlus, FaCheck, FaTimes, FaSearchLocation } from "react-icons/fa";
 import PropertyModal from "../../components/PropertyModal";
+import AddPropertyModal from "../../components/AddPropertyModal";
 
 export default props => {
   const [mode, setMode] = React.useState("home");
@@ -29,6 +30,7 @@ export default props => {
     propertyDetailsModalOpen,
     setPropertyDetailsModalOpen
   ] = React.useState(false);
+  const [addPropertymodalOpen, setAddPropertymodalOpen] = React.useState(false);
   const [addMarkerPosition, setAddMarkerPosition] = React.useState(null);
   const [map, setMap] = React.useState(null);
 
@@ -55,6 +57,11 @@ export default props => {
   let handleModalClose = () => {
     setSelectedProperty(null);
     setPropertyDetailsModalOpen(false);
+  };
+
+  let handleAddModalClose = () => {
+    setMode("home");
+    setAddPropertymodalOpen(false);
   };
 
   let fetchProperties = async position => {
@@ -190,6 +197,14 @@ export default props => {
       />
     ) : null;
 
+  let renderAddPropertyModal = () => (
+    <AddPropertyModal
+      userToken={userToken}
+      selectedProperty={selectedProperty}
+      onClose={handleAddModalClose}
+      open={addPropertymodalOpen}
+    />
+  );
   let renderFabs = () =>
     mode === "home" ? (
       <div className={styles.fabsContainer}>
@@ -199,7 +214,10 @@ export default props => {
       </div>
     ) : (
       <div className={styles.fabsContainer}>
-        <div onClick={() => setMode("details")} className={styles.addFab}>
+        <div
+          onClick={() => setAddPropertymodalOpen(true)}
+          className={styles.addFab}
+        >
           <FaCheck color="white" size="30" />
         </div>
         <div onClick={findMarker} className={styles.helpFab}>
@@ -250,7 +268,7 @@ export default props => {
 
       {renderSpinner()}
       {renderFabs()}
-
+      {renderAddPropertyModal()}
       {renderPropertyModal()}
     </div>
   );
