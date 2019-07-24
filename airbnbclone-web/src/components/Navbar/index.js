@@ -1,16 +1,21 @@
 import React, { useEffect, useContext } from "react";
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
-import { isAuthenticated } from "../../Helpers/Auth";
+import { isAuthenticated, logout } from "../../Helpers/Auth";
 
-export default props => {
+export default withRouter(props => {
   const { authenticated, setAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     if (isAuthenticated()) setAuthenticated(true);
     else setAuthenticated(false);
   }, []);
+
+  let exit = () => {
+    logout();
+    props.history.push("/login");
+  };
 
   return (
     <div className={styles.navbar}>
@@ -24,9 +29,9 @@ export default props => {
           <Link to="/map" className={styles.item}>
             Map
           </Link>
-          <Link to="/profile" className={styles.item}>
-            Profile
-          </Link>
+          <div onClick={exit} className={styles.item}>
+            Logout
+          </div>
         </div>
       ) : (
         <div className={styles.group}>
@@ -40,4 +45,4 @@ export default props => {
       )}
     </div>
   );
-};
+});
