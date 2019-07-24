@@ -20,7 +20,7 @@ export default props => {
       try {
         const result = await login({ userEmail: email, password });
         setAuthenticated(true);
-        props.history.push("/maps");
+        props.history.push("/map");
       } catch (error) {
         showErrorMessage("Something went wrong, try using a different email!");
       }
