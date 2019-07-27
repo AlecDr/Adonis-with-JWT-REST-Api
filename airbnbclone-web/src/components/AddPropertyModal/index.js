@@ -3,21 +3,15 @@ import Modal from "react-responsive-modal";
 import Dropzone from "react-dropzone";
 import styles from "./styles.module.css";
 import { ScaleLoader } from "react-spinners";
+import api from "../../api";
 
 export default props => {
   const [loading, setLoading] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [message, setMessage] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [images, setImages] = React.useState([]);
-
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      images.forEach(file => URL.revokeObjectURL(file.preview));
-    },
-    [images]
-  );
 
   const thumbs = images.map(file => (
     <div className={styles.thumb} key={file.name}>
@@ -26,6 +20,69 @@ export default props => {
       </div>
     </div>
   ));
+
+  let resetModal = () => {
+    setLoading(false);
+    setImages([]);
+    setTitle("");
+    setAddress("");
+    setPrice("");
+  };
+
+  let addProperty = async () => {
+    if (validateForm()) {
+      setLoading(true);
+      try {
+        const { lat, lng } = props.markerPosition;
+
+        const data = {
+          token: props.userToken,
+          address,
+          title,
+          price,
+          latitude: lat,
+          longitude: lng
+        };
+
+        const result = await api.post("/properties", data);
+
+        if (images.length) {
+          const id = result.data.property.id;
+
+          let picturesData = new FormData();
+
+          picturesData.append("token", props.userToken);
+
+          images.map((image, index) => {
+            picturesData.append(`image`, image);
+          });
+
+          await api.post(`/properties/${id}/images/store`, picturesData);
+        }
+
+        resetModal();
+        props.onSuccess();
+      } catch (error) {
+        setLoading(false);
+        console.log(error.message);
+        setMessage("Something went wrong, try again later!");
+      }
+    }
+  };
+
+  let validateForm = () => {
+    setMessage("");
+
+    if (title.trim().length && address.trim().length && price > 0) {
+      return true;
+    } else {
+      setMessage("Please provide valid informations!");
+      return false;
+    }
+  };
+
+  let renderMessage = () =>
+    message ? <p className={styles.error}>{message}</p> : null;
 
   let renderContent = () =>
     !loading ? (
@@ -81,7 +138,9 @@ export default props => {
             </section>
           )}
         </Dropzone>
+        {renderMessage()}
         <button
+          onClick={addProperty}
           type="button"
           className={[styles.button, styles.registerButton].join(" ")}
         >

@@ -63,6 +63,12 @@
   margin-top: 16px;
 }
 
+.error {
+  font-size: 20px;
+  align-self: center;
+  color: red;
+}
+
 .thumb {
   display: flex;
   justify-content: center;

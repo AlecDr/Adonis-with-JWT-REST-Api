@@ -61,15 +61,16 @@ export default props => {
       variableWidth: true
     };
 
-    return (
+    return property.images.length ? (
       <div className={styles.imagesContainer}>
+        <p className={styles.sectionTitle}>Images</p>
         <Slider {...settings}>
           {property.images.map((image, index) => (
             <img className={styles.image} key={index} src={image.url} alt="" />
           ))}
         </Slider>
       </div>
-    );
+    ) : null;
   };
 
   let renderContent = () =>
@@ -78,7 +79,7 @@ export default props => {
     ) : (
       <div className={styles.contentContainer}>
         <p className={styles.propertyTitle}>{property.title}</p>
-        <p className={styles.sectionTitle}>Images</p>
+
         {renderImagesCarousel()}
         <p className={styles.sectionTitle}>Address</p>
         <p className={styles.propertyAddress}>{property.address}</p>

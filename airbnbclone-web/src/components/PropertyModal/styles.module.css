@@ -33,6 +33,7 @@
 }
 
 .propertyTitle {
+  min-width: 70vw;
   align-self: center;
   font-size: 30px;
   padding: 4px;

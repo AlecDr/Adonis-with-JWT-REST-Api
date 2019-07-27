@@ -49,6 +49,12 @@ export default props => {
     }
   };
 
+  let onSuccessAdd = () => {
+    setMode("home");
+    setAddPropertymodalOpen(false);
+    fetchProperties({ lat: map.getCenter().lat(), lng: map.getCenter().lng() });
+  };
+
   let detailsButtonHandler = propertyId => {
     setSelectedProperty(propertyId);
     setPropertyDetailsModalOpen(true);
@@ -199,6 +205,8 @@ export default props => {
 
   let renderAddPropertyModal = () => (
     <AddPropertyModal
+      onSuccess={onSuccessAdd}
+      markerPosition={addMarkerPosition}
       userToken={userToken}
       selectedProperty={selectedProperty}
       onClose={handleAddModalClose}
